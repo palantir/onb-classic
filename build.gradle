@@ -77,6 +77,7 @@ tasks.register('showVersion') {
 tasks.register('generateDocsVersion') {
     def outputFile = file("${projectDir}/docs/source/_version.py")
     outputs.file outputFile
+    outputs.upToDateWhen { false }  // Always regenerate since it depends on git state
     doLast {
         def versionString = project.version.toString()
 
