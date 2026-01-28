@@ -1,0 +1,51 @@
+#!/bin/bash
+# chkconfig: 2345 20 80
+# description: Start ONB-Classic
+
+config="/opt/onb-classic/rules.onr"
+
+start() {
+  # Make sure only root can run our script
+  if [ "$(id -u)" != "0" ]; then
+      echo "This script must be run as root" 1>&2
+    exit 1
+  fi
+
+  cd /opt/onb-classic/
+
+  screen -ls | grep onb
+  if [ $? == 1 ]
+  then
+    screen -S onb -d -m ./onb.sh -console -r $config
+    echo "Starting ONB"
+  else
+    echo "Already running onb"
+  fi
+}
+
+stop() {
+  # Make sure only root can run our script
+  if [ "$(id -u)" != "0" ]; then
+    echo "This script must be run as root" 1>&2
+    exit 1
+      fi
+  pkill -f "java -jar onb-classic-all.jar -console -r $config"
+}
+
+
+case "$1" in
+    start)
+       start
+       ;;
+    stop)
+       stop
+       ;;
+    restart)
+       stop
+       start
+       ;;
+    *)
+       echo "Usage: $0 {start|stop|restart}"
+esac
+
+exit 0

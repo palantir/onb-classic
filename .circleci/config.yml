@@ -1,0 +1,75 @@
+version: 2
+
+jobs:
+  build:
+    docker: [{ image: 'cimg/openjdk:21.0' }]
+    steps:
+      - checkout
+      - run:
+          name: Creating artifacts and cache dir
+          command: |
+            mkdir ~/assets-cache
+      - run:
+          name: Build ONB-Classic
+          command: >
+            bash ./scripts/verify.sh
+      - run:
+          name: Copy Assets
+          command: |
+            cp ./build/libs/onb-classic-all.jar ~/assets-cache/onb-classic.jar
+      - run:
+          name: Get Version
+          command: |
+            onbVersion=$(./gradlew -q showVersion)
+            echo $onbVersion > ~/assets-cache/onbversion.txt
+      - persist_to_workspace:
+          root: ~/assets-cache
+          paths:
+            - ./*
+
+  deploy-snapshot:
+    docker: [{ image: 'cimg/openjdk:21.0' }]
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/assets-cache
+      - run:
+          name: Publish snapshot
+          command: if [[ -z "$CIRCLE_PR_NUMBER" ]]; then ./scripts/publish.sh snapshot; else echo "Skipping...not from the official repo."; fi
+
+  deploy-release:
+    docker: [{ image: 'cimg/openjdk:21.0' }]
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/assets-cache
+      - run:
+          name: Publish release
+          command: if [[ -z "$CIRCLE_PR_NUMBER" ]]; then ./scripts/publish.sh release; else echo "Skipping...not from the official repo."; fi
+
+  circle-all:
+    docker: [{ image: 'busybox:1.36.1@sha256:6d9ac9237a84afe1516540f40a0fafdc86859b2141954b4d643af7066d598b74' }]
+    resource_class: small
+    steps:
+      - run: {command: echo "All required jobs finished successfully"}
+
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+      - build
+      - deploy-snapshot:
+          requires:
+            - build
+          filters:
+            branches:
+              only: /^develop.*/
+      - deploy-release:
+          requires:
+            - build
+          filters:
+            branches:
+              only: /^release.*/
+      - circle-all:
+          requires: [ build ]
+          filters: { tags: { only: /.*/ } }

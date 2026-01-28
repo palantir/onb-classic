@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="450" minWidth="720" prefHeight="990.0" prefWidth="1294.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.palantir.onb.gui.GuiController">
+   <children>
+      <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+         <children>
+            <TabPane id="mainTabArea" fx:id="mainTabPanel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="450.0" prefWidth="720.0" tabClosingPolicy="UNAVAILABLE" tabMaxHeight="0.0" tabMaxWidth="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+              <tabs>
+                <Tab text="General">
+                  <content>
+                    <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: #dcdcdd;">
+                           <children>
+                              <TableView id="generalInfoTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="335.0" prefWidth="580.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                                <columns>
+                                  <TableColumn prefWidth="75.0" text="MAC Address" />
+                                    <TableColumn prefWidth="75.0" text="Last IP" />
+                                  <TableColumn prefWidth="75.0" text="Service" />
+                                    <TableColumn prefWidth="75.0" text="Date Time" />
+                                </columns>
+                                 <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                 </columnResizePolicy>
+                              </TableView>
+                           </children>
+                        </AnchorPane>
+                  </content>
+                </Tab>
+                <Tab text="Logs">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <TabPane fx:id="logsTabPane" prefHeight="352.0" prefWidth="600.0" side="LEFT" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <tabs>
+                                  <Tab closable="false" text="All">
+                                    <content>
+                                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                             <children>
+                                                <TextArea id="allLog" editable="false" layoutX="30.0" layoutY="6.0" prefHeight="352.0" prefWidth="567.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                   <font>
+                                                      <Font size="10.0" />
+                                                   </font>
+                                                </TextArea>
+                                             </children>
+                                          </AnchorPane>
+                                    </content>
+                                  </Tab>
+                                  <Tab closable="false" text="DHCP">
+                                    <content>
+                                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                             <children>
+                                                <TextArea id="dhcpLog" editable="false" layoutX="47.0" layoutY="32.0" prefHeight="352.0" prefWidth="567.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                   <font>
+                                                      <Font size="10.0" />
+                                                   </font>
+                                                </TextArea>
+                                             </children>
+                                          </AnchorPane>
+                                    </content>
+                                  </Tab>
+                                    <Tab closable="false" text="TFTP">
+                                      <content>
+                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                             <children>
+                                                <TextArea editable="false" layoutX="103.0" layoutY="46.0" prefHeight="352.0" prefWidth="567.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                   <font>
+                                                      <Font size="10.0" />
+                                                   </font>
+                                                </TextArea>
+                                             </children>
+                                          </AnchorPane>
+                                      </content>
+                                    </Tab>
+                                    <Tab closable="false" text="HTTP">
+                                      <content>
+                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                             <children>
+                                                <TextArea editable="false" layoutX="108.0" layoutY="60.0" prefHeight="352.0" prefWidth="567.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                   <font>
+                                                      <Font size="10.0" />
+                                                   </font>
+                                                </TextArea>
+                                             </children>
+                                          </AnchorPane>
+                                      </content>
+                                    </Tab>
+                                </tabs>
+                              </TabPane>
+                           </children>
+                        </AnchorPane>
+                  </content>
+                </Tab>
+                  <Tab text="Options">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0">
+                           <children>
+                              <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="771.0" prefViewportWidth="608.0" prefWidth="1283.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="11.0" AnchorPane.topAnchor="0.0">
+                                 <content>
+                                    <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                                       <children>
+                                          <TableView id="interfaceTable" layoutX="20.0" layoutY="348.0" prefHeight="200.0" prefWidth="495.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
+                                            <columns>
+                                              <TableColumn prefWidth="75.0" text="Enabled" />
+                                              <TableColumn prefWidth="75.0" text="Interface Name" />
+                                                <TableColumn prefWidth="75.0" text="IP Address" />
+                                            </columns>
+                                             <columnResizePolicy>
+                                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                             </columnResizePolicy>
+                                          </TableView>
+                                          <CheckBox id="dhcpAutostart" layoutX="225.0" layoutY="42.0" mnemonicParsing="false" onMouseClicked="#changeDhcpStartSetting" text="DHCP" />
+                                          <Label layoutX="46.0" layoutY="106.0" text="Level:" />
+                                          <Label layoutX="1034.0" layoutY="643.0" text="Client ID:" AnchorPane.rightAnchor="200.0" />
+                                          <CheckBox id="httpAutostart" layoutX="446.0" layoutY="42.0" mnemonicParsing="false" onMouseClicked="#changeHttpStartSetting" text="HTTP" />
+                                          <Label layoutX="46.0" layoutY="566.0" text="Broadcast Type:" />
+                                          <Button id="newRuleButton" layoutX="854.0" layoutY="672.0" mnemonicParsing="false" onMouseClicked="#addRule" prefWidth="29.0" text="+" AnchorPane.rightAnchor="400.0" />
+                                          <Label layoutX="1013.0" layoutY="719.0" text="Architecture:" AnchorPane.rightAnchor="200.0" />
+                                          <Label layoutX="1044.0" layoutY="823.0" text="Server:" AnchorPane.rightAnchor="200.0" />
+                                          <TextField id="ruleFileSetable" layoutX="1102.0" layoutY="782.0" AnchorPane.rightAnchor="20.0" />
+                                          <TextField id="ruleMacSetable" layoutX="1102.0" layoutY="676.0" AnchorPane.rightAnchor="20.0" />
+                                          <Label layoutX="962.0" layoutY="750.0" text="Boot Settings:" AnchorPane.rightAnchor="250.0">
+                                             <font>
+                                                <Font name="System Bold" size="12.0" />
+                                             </font>
+                                          </Label>
+                                          <ComboBox id="logLevel" layoutX="225.0" layoutY="101.0" prefHeight="27.0" prefWidth="1015.0" AnchorPane.leftAnchor="225.0" AnchorPane.rightAnchor="20.0" />
+                                          <Button id="moveRuleUp" layoutX="855.0" layoutY="710.0" mnemonicParsing="false" onMouseClicked="#moveRuleUp" text="▲" AnchorPane.rightAnchor="400.0" />
+                                          <Label layoutX="10.0" layoutY="10.0" text="Startup Services">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <ComboBox id="broadcastTypeSelectable" layoutX="225.0" layoutY="561.0" prefHeight="27.0" prefWidth="400.0" />
+                                          <Label layoutX="1052.0" layoutY="681.0" text="MAC:" AnchorPane.rightAnchor="200.0" />
+                                          <Label layoutX="10.0" layoutY="72.0" text="Logging">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <TextField id="ruleClientIdSetable" layoutX="1102.0" layoutY="639.0" AnchorPane.rightAnchor="20.0" />
+                                          <Label layoutX="10.0" layoutY="319.0" text="Interfaces">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <TextField id="ruleServerSetable" layoutX="1102.0" layoutY="818.0" AnchorPane.rightAnchor="20.0" />
+                                          <TextField id="locationSetable" layoutX="225.0" layoutY="140.0" prefHeight="27.0" prefWidth="1021.0" AnchorPane.leftAnchor="225.0" AnchorPane.rightAnchor="20.0" />
+                                          <CheckBox id="tftpAutostart" layoutX="338.0" layoutY="42.0" mnemonicParsing="false" onMouseClicked="#changeTftpStartSetting" text="TFTP" />
+                                          <Button id="deleteRule" layoutX="854.0" layoutY="784.0" mnemonicParsing="false" onMouseClicked="#removeRule" prefWidth="29.0" text="-" AnchorPane.rightAnchor="400.0" />
+                                          <Label layoutX="1061.0" layoutY="787.0" text="File:" AnchorPane.rightAnchor="200.0" />
+                                          <Label layoutX="46.0" layoutY="145.0" text="Location:" />
+                                          <Label layoutX="11.0" layoutY="597.0" text="PXE Rules">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <Label layoutX="976.0" layoutY="615.0" text="Conditions:" AnchorPane.rightAnchor="250.0">
+                                             <font>
+                                                <Font name="System Bold" size="12.0" />
+                                             </font>
+                                          </Label>
+                                          <Button id="moveRuleDown" layoutX="855.0" layoutY="748.0" mnemonicParsing="false" onMouseClicked="#moveRuleDown" text="▼" AnchorPane.rightAnchor="400.0" />
+                                          <TextField id="ruleArchSelectable" layoutX="1102.0" layoutY="715.0" AnchorPane.rightAnchor="20.0" />
+                                          <ListView id="rulesView" layoutX="20.0" layoutY="636.0" prefHeight="225.0" prefWidth="250.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="450.0" />
+                                          <Label layoutX="11.0" layoutY="178.0" text="File Serving Settings">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <Label layoutX="46.0" layoutY="213.0" text="Http Port:" />
+                                          <TextField id="optionsHttpPort" layoutX="225.0" layoutY="208.0" prefWidth="400.0" AnchorPane.leftAnchor="225.0" AnchorPane.rightAnchor="20.0" />
+                                          <Label layoutX="46.0" layoutY="252.0" text="TFTP/HTTP Root Folder:" />
+                                          <TextField id="optionsTftpHome" layoutX="225.0" layoutY="247.0" prefWidth="400.0" AnchorPane.leftAnchor="225.0" AnchorPane.rightAnchor="20.0" />
+                                          <Label id="versionLabel" layoutX="10.0" layoutY="878.0" text="Version ">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <Label layoutX="46.0" layoutY="291.0" text="ISO/ZIP Handling:" />
+                                          <CheckBox id="allowIsoExtracting" layoutX="225.0" layoutY="291.0" mnemonicParsing="false" onMouseClicked="#changeIsoExtractingSetting" text="Allow ISO/ZIP Live Extraction" />
+                                       </children>
+                                    </AnchorPane>
+                                 </content>
+                                 <padding>
+                                    <Insets bottom="10.0" />
+                                 </padding>
+                              </ScrollPane>
+                           </children>
+                        </AnchorPane>
+                    </content>
+                  </Tab>
+              </tabs>
+            </TabPane>
+         </children>
+         <StackPane.margin>
+            <Insets top="40.0" />
+         </StackPane.margin>
+         <padding>
+            <Insets top="-10.0" />
+         </padding>
+      </AnchorPane>
+      <AnchorPane layoutX="16.0" layoutY="8.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minWidth="300.0" prefHeight="40.0" scaleZ="10.0" style="-fx-background-color: #336699;" StackPane.alignment="TOP_CENTER">
+         <children>
+            <GridPane layoutX="7.0" layoutY="8.0" maxWidth="1.7976931348623157E308" minWidth="300.0" prefHeight="24.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="8.0">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="430.0" minWidth="0.0" prefWidth="381.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="199.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <Label layoutX="48.0" layoutY="8.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="24.0" prefWidth="397.0" text="ONB-Classic" textFill="#e8f1f2" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets left="30.0" />
+                     </GridPane.margin>
+                  </Label>
+                  <Pane fx:id="topTabControlPanel" layoutX="15.6669921875" layoutY="11.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="16.0" prefWidth="210.0" AnchorPane.rightAnchor="29.6669921875" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+                     <children>
+                        <Label id="generalButton" onMouseClicked="#changeToGeneralView" text="General" textFill="#e8f1f2" underline="true" />
+                        <Label id="logsButton" layoutX="60.0" onMouseClicked="#changeToLogsView" text="Logs" textFill="#e8f1f2" />
+                        <Label id="optionsButton" layoutX="98.0" onMouseClicked="#changeToOptionsView" text="Options" textFill="#e8f1f2" />
+                        <Label layoutX="155.0" onMouseClicked="#showServicesStatus" text="Services ▾" textFill="#e8f1f2" />
+                        <MenuButton id="servicesMenu" layoutX="115.0" mnemonicParsing="false" text="Services" visible="false">
+                          <items>
+                            <MenuItem mnemonicParsing="false" text="Action 1" />
+                            <MenuItem mnemonicParsing="false" text="Action 2" />
+                          </items>
+                        </MenuButton>
+                     </children>
+                     <padding>
+                        <Insets top="10.0" />
+                     </padding>
+                  </Pane>
+                  <ImageView fitHeight="29.0" fitWidth="24.0" layoutX="16.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@logo.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </GridPane>
+         </children>
+      </AnchorPane>
+   </children>
+</StackPane>
