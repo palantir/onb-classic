@@ -16,7 +16,7 @@ jobs:
       - run:
           name: Copy Assets
           command: |
-            cp ./build/libs/onb-classic-all.jar ~/assets-cache/onb-classic.jar
+            cp ./build/libs/onb-classic-*-all.jar ~/assets-cache/onb-classic-all.jar
       - run:
           name: Get Version
           command: |
