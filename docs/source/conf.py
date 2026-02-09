@@ -61,12 +61,11 @@ try:
     extensions.append('sphinx_rtd_theme')
 except ImportError:
     html_theme = 'alabaster'
-    print('Note: sphinx-rtfm-theme not installed. Using alabaster theme.')
-    print('Install with: pip install sphinx-rtfm-theme')
+    print('Note: sphinx-rtd-theme not installed. Using alabaster theme.')
+    print('Install with: pip install sphinx-rtd-theme')
 
 # Theme options
 html_theme_options = {
-    'external': 'false',
     'search': 'true',
 }
 

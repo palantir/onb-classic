@@ -42,7 +42,7 @@ help:
     @echo "  changes        to make an overview of all changed/added/deprecated items"
     @echo "  xml            to make Docutils-native XML files"
     @echo "  pseudoxml      to make pseudoxml-XML files for display purposes"
-    @echo "  linkcheck      to check all external links for integrity"
+    @echo "  linkcheck      to check all links for integrity"
     @echo "  doctest        to run all doctests embedded in the documentation (if enabled)"
     @echo "  coverage       to run coverage check of the documentation (if enabled)"
     @echo "  dummy          to check syntax errors of document sources"
@@ -60,12 +60,6 @@ html:
     $(SPHINXBUILD) -b html -t ptinternal $(ALLSPHINXOPTS) $(BUILDDIR)/html
     @echo
     @echo "Build finished. The HTML pages are in $(BUILDDIR)/html."
-
-.PHONY: externalhtml
-externalhtml:
-    $(SPHINXBUILD) -b html -t externalonly -A external=True $(ALLSPHINXOPTS) $(BUILDDIR)/external-html
-    @echo
-    @echo "Build finished. The HTML pages are in $(BUILDDIR)/external-html."
 
 .PHONY: livehtml
 livehtml:

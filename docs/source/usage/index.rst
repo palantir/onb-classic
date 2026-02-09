@@ -37,7 +37,7 @@ Normal Usage
 ~~~~~~~~~~~~
 
 Worth mentioning, you may routinely see "TftpService - ERROR TFTP010: Attempted to check options negotiation, and client
-gave failure", that is normal. A lot of TFTP clients start a connecting asking the size of the file, cancel that
+gave failure", that is normal. A lot of TFTP clients start a connection asking the size of the file, cancel that
 connection, then start the real transfer.
 
 Console Usage
