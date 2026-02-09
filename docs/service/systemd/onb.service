@@ -1,0 +1,31 @@
+[Unit]
+Description=OpenNetBoot - PXE Boot Server
+Documentation=https://github.com/palantir/ONB-Classic
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/onb-classic
+ExecStart=/usr/bin/java -jar /opt/onb-classic/onb-classic-all.jar -console -r /opt/onb-classic/rules.onr
+Restart=on-failure
+RestartSec=10
+
+# Security and resource limits
+AmbientCapabilities=CAP_NET_BIND_SERVICE CAP_NET_RAW
+CapabilityBoundingSet=CAP_NET_BIND_SERVICE CAP_NET_RAW
+NoNewPrivileges=true
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=onb
+
+# Process management
+KillMode=control-group
+KillSignal=SIGTERM
+TimeoutStopSec=30
+
+[Install]
+WantedBy=multi-user.target
