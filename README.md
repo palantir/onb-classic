@@ -13,7 +13,7 @@ of computers, and can run off of Windows, Linux, or Mac without modification. Wi
 ports 67 (DHCP), 69 (TFTP), 80 (HTTP - Configurable), and 4011 (ProxyDHCP) the application must
 run as Administrator/Root unless just HTTP services are in use and moved to a higher port.
 
-Docs: WILL MOVE TO GITHUB PAGES ONCE MOVED OVER, in docs/source
+Docs: [Docs](https://palantir.github.io/onb-classic/), source in docs/source
 
 Releases: NEW URL ONCE PUBLISHED
 
