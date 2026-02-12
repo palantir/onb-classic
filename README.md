@@ -21,7 +21,7 @@ Releases: [Releases on Github](https://github.com/palantir/onb-classic/releases)
 
 ## Running
 
-[Check out the getting started guide!](Link to be added)
+[Check out the getting started guide!](https://palantir.github.io/onb-classic/full-config/index.html)
 
 ## Building
 
@@ -36,7 +36,6 @@ while onb-classic-all.jar has all its dependencies bundled into the jar.
 
 1. Clean up code more
   - replace all PUBLIC_URL_NEEDED
-2. Double check for internal references
 
 ## Licenses
 
