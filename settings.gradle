@@ -9,7 +9,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.palantir.gradle.jdks:gradle-jdks-settings:0.69.0'
+        classpath 'com.palantir.gradle.jdks:gradle-jdks-settings:0.73.0'
     }
 }
 apply plugin: 'com.palantir.jdks.settings'
