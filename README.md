@@ -15,7 +15,7 @@ run as Administrator/Root unless just HTTP services are in use and moved to a hi
 
 Docs: [Docs](https://palantir.github.io/onb-classic/), source in docs/source
 
-Releases: NEW URL ONCE PUBLISHED
+Releases: [Releases on Github](https://github.com/palantir/onb-classic/releases)
 
 ![ONB-Classic Booting](./docs/onb_booting.gif)
 
