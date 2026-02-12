@@ -29,13 +29,6 @@ jobs:
         with:
           fetch-depth: 0  # Full history needed for git-version plugin
 
-      - name: Set up JDK 21
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '21'
-          cache: 'gradle'
-
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
