@@ -11,7 +11,7 @@ Steps
 
 #. Create a folder for ONB-Classic to live in
 
-#. Download the latest 'onb-classic-all.jar' from `Github <PUBLIC_URL_NEEDED>`_ to that folder
+#. Download the latest 'onb-classic-all.jar' from `Github Releases<https://github.com/palantir/onb-classic/releases>`_ to that folder
 
 #. To run on port 67 which is critical to the boot process, we need to be an admin on the machine. The following will assume you have opened a terminal that allows Administrative access
 
