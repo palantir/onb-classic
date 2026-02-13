@@ -194,7 +194,7 @@ jdks {
 }
 
 javaVersions {
-    javaCompiler = 21
+    javaCompiler = 25
     libraryTarget = 21
     runtime = 21
 }
