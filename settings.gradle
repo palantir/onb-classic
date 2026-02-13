@@ -1,12 +1,13 @@
 pluginManagement {
     repositories {
-        mavenCentral()
+        mavenCentral() { metadataSources { mavenPom(); ignoreGradleMetadataRedirection() } }
         gradlePluginPortal()
     }
 }
 buildscript {
     repositories {
         mavenCentral()
+        gradlePluginPortal()
     }
     dependencies {
         classpath 'com.palantir.gradle.jdks:gradle-jdks-settings:0.73.0'
