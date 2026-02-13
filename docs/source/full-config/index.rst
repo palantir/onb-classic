@@ -10,13 +10,13 @@ Configuring ONB-Classic to Load with a GUI and Boot iPXE
 
 #. Create an empty folder
 
-#. Go to `Github <PUBLIC_URL_NEEDED>`_ and download the latest `onb-classic-all.jar`
+#. Go to `Github Releases <https://github.com/palantir/onb-classic/releases>`_ and download the latest `onb-classic-all.jar`
 
 #. We need to run the app as Admin to bind to the DHCP + TFTP + HTTP ports:
 
-    -- For Windows, go to `Github <PUBLIC_URL_NEEDED>`_ and download onb.bat and put it in the same folder
+    -- For Windows, go to `Github <https://raw.githubusercontent.com/palantir/onb-classic/refs/heads/develop/scripts/onb.bat>`_ and download onb.bat and put it in the same folder
 
-    -- For Linux/Mac, go to `Github <PUBLIC_URL_NEEDED>`_ and download onb.sh and put it in the same folder
+    -- For Linux/Mac, go to `Github <https://raw.githubusercontent.com/palantir/onb-classic/refs/heads/develop/scripts/onb.sh>`_ and download onb.sh and put it in the same folder
 
 #. Click the script for your platform
 
