@@ -13,15 +13,15 @@ of computers, and can run off of Windows, Linux, or Mac without modification. Wi
 ports 67 (DHCP), 69 (TFTP), 80 (HTTP - Configurable), and 4011 (ProxyDHCP) the application must
 run as Administrator/Root unless just HTTP services are in use and moved to a higher port.
 
-Docs: WILL MOVE TO GITHUB PAGES ONCE MOVED OVER, in docs/source
+Docs: [Docs](https://palantir.github.io/onb-classic/), source in docs/source
 
-Releases: NEW URL ONCE PUBLISHED
+Releases: [Releases on Github](https://github.com/palantir/onb-classic/releases)
 
 ![ONB-Classic Booting](./docs/onb_booting.gif)
 
 ## Running
 
-[Check out the getting started guide!](Link to be added)
+[Check out the getting started guide!](https://palantir.github.io/onb-classic/full-config/index.html)
 
 ## Building
 
@@ -36,7 +36,6 @@ while onb-classic-all.jar has all its dependencies bundled into the jar.
 
 1. Clean up code more
   - replace all PUBLIC_URL_NEEDED
-2. Double check for internal references
 
 ## Licenses
 
