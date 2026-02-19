@@ -44,8 +44,8 @@ public class BootRulesParser {
      * Load the logger, and which version we are running of ONB.
      * @param newLogger passed in logger
      */
-    @SuppressWarnings("for-rollout:NullAway")
-    public BootRulesParser(LogStandard newLogger) {
+        @SuppressWarnings("for-rollout:NullAway")
+        public BootRulesParser(LogStandard newLogger) {
         this.logger = newLogger;
         onbVersion = Core.ONB_VERSION;
     }
@@ -135,8 +135,8 @@ public class BootRulesParser {
      * @param fileData string the rule data
      * @return a bootrules object
      */
-    @SuppressWarnings("for-rollout:NullAway")
-    public BootRules loadRules(String fileData) {
+        @SuppressWarnings("for-rollout:NullAway")
+        public BootRules loadRules(String fileData) {
         newRuleSet = new BootRules();
         handleJson =
                 new JsonReader(new StringReader(fileData.replace("\\", "\\\\")));
@@ -282,8 +282,8 @@ public class BootRulesParser {
         return true;
     }
 
-    @SuppressWarnings("for-rollout:NullAway")
-    private TftpSettings parseTftp(JsonReader passedReader) {
+        @SuppressWarnings("for-rollout:NullAway")
+        private TftpSettings parseTftp(JsonReader passedReader) {
         JsonToken nextStage;
         try {
             nextStage = passedReader.peek();
@@ -372,8 +372,8 @@ public class BootRulesParser {
      * @param passedReader the json reader we are using
      * @return a list of rules
      */
-    @SuppressWarnings("for-rollout:NullAway")
-    private List<BootRule> parsePxeRules(JsonReader passedReader) {
+        @SuppressWarnings("for-rollout:NullAway")
+        private List<BootRule> parsePxeRules(JsonReader passedReader) {
         final List<BootRule> returningRules = new ArrayList<>();
 
         JsonToken nextStage;

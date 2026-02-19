@@ -86,8 +86,8 @@ public class GuiController {
     private static final String BLANK_MAC = "00:00:00:00:00:00";
     private static final String GENERAL_IP = "0.0.0.0";
 
-    @SuppressWarnings("for-rollout:NullAway")
-    private Manager manager;
+        @SuppressWarnings("for-rollout:NullAway")
+        private Manager manager;
 
     private boolean closing = false;
     private boolean editingTable = false;
@@ -95,23 +95,23 @@ public class GuiController {
     private final Map<String, PcTracker> generalSystems = new HashMap<>();
     private final Map<String, String> ipToMac = new HashMap<>();
 
-    @SuppressWarnings("for-rollout:NullAway")
-    private TrayIcon trayIcon;
+        @SuppressWarnings("for-rollout:NullAway")
+        private TrayIcon trayIcon;
 
     private final GuiLog pxeLogger = new GuiLog();
     private final GuiLog tftpLogger = new GuiLog();
     private final GuiLog httpLogger = new GuiLog();
 
-    @SuppressWarnings("for-rollout:NullAway")
-    @FXML
+        @SuppressWarnings("for-rollout:NullAway")
+        @FXML
     private TabPane mainTabPanel;
 
-    @SuppressWarnings("for-rollout:NullAway")
-    @FXML
+        @SuppressWarnings("for-rollout:NullAway")
+        @FXML
     private Pane topTabControlPanel;
 
-    @SuppressWarnings("for-rollout:NullAway")
-    @FXML
+        @SuppressWarnings("for-rollout:NullAway")
+        @FXML
     private TabPane logsTabPane;
 
     /**
@@ -254,8 +254,8 @@ public class GuiController {
      * @param logparts split up log
      * @param timestamp time stamp of the event
      */
-    @SuppressWarnings("for-rollout:NullAway")
-    private void twoPartLog(String[] ipParts, String[] logparts, long timestamp) {
+        @SuppressWarnings("for-rollout:NullAway")
+        private void twoPartLog(String[] ipParts, String[] logparts, long timestamp) {
         if (ipToMac.containsKey(ipParts[1])) {
             String mac = ipToMac.get(ipParts[1]);
             PcTracker singlePc = generalSystems.get(mac);
@@ -1357,8 +1357,8 @@ public class GuiController {
      * @param id item selected
      * @return node of that item
      */
-    @SuppressWarnings("for-rollout:NullAway")
-    private Node getSettingsItem(String id) {
+        @SuppressWarnings("for-rollout:NullAway")
+        private Node getSettingsItem(String id) {
         AnchorPane settingsOuterAnchor = (AnchorPane) mainTabPanel.getTabs().get(2).getContent();
         AnchorPane settingsInnerAnchor = (AnchorPane)
                 ((ScrollPane) settingsOuterAnchor.getChildren().get(0)).getContent();

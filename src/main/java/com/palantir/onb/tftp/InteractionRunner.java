@@ -57,8 +57,8 @@ public class InteractionRunner implements Runnable {
      * @param settingsFile Settings on how this TftpService server is configured and where the root file
      *        system is
      **/
-    @SuppressWarnings("for-rollout:NullAway")
-    InteractionRunner(DatagramPacket packetToRespondTo, TftpSettings settingsFile, LogStandard passedLogger) {
+        @SuppressWarnings("for-rollout:NullAway")
+        InteractionRunner(DatagramPacket packetToRespondTo, TftpSettings settingsFile, LogStandard passedLogger) {
         rawPacketToRespondTo = packetToRespondTo;
         internalSettings = settingsFile;
         localLogger = passedLogger;
@@ -67,8 +67,8 @@ public class InteractionRunner implements Runnable {
     /**
      * The runner that does communications.
      */
-    @SuppressWarnings("for-rollout:PatternMatchingInstanceof")
-    @Override
+        @SuppressWarnings("for-rollout:PatternMatchingInstanceof")
+        @Override
     public void run() {
         TftpPacket workingPacket;
         try {
@@ -207,8 +207,8 @@ public class InteractionRunner implements Runnable {
      * Attempt to get a new TFTP packet from this connection, if it fails we try again then fail out.
      * @return Packet if gotten or null if we never got a response
      */
-    @SuppressWarnings("for-rollout:NullAway")
-    private TftpPacket getOneTftpPacket() {
+        @SuppressWarnings("for-rollout:NullAway")
+        private TftpPacket getOneTftpPacket() {
         int retryAttempt = 0;
         while (retryAttempt < 2) {
             final DatagramPacket manualMode = getOnePacket();
@@ -382,8 +382,8 @@ public class InteractionRunner implements Runnable {
     }
     // CHECKSTYLE.ON
 
-    @SuppressWarnings("for-rollout:NullAway")
-    private File getRequestedFileOrReturnNull(FixedTftpReadPacket fullPacket) {
+        @SuppressWarnings("for-rollout:NullAway")
+        private File getRequestedFileOrReturnNull(FixedTftpReadPacket fullPacket) {
         File crapFileGetter = GeneralTools.getRealFileName(
                     fullPacket.getFileName(),
                     localLogger,

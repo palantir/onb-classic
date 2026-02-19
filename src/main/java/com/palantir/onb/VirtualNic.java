@@ -47,8 +47,8 @@ public final class VirtualNic implements Runnable {
     private final List<ProcessedPacket> datastore = new ArrayList<>();
     private Logging logger;
 
-    @SuppressWarnings("for-rollout:NullAway")
-    VirtualNic() {}
+        @SuppressWarnings("for-rollout:NullAway")
+        VirtualNic() {}
 
     public void setLogger(Logging passedLogger) {
         logger = passedLogger;
@@ -162,8 +162,8 @@ public final class VirtualNic implements Runnable {
      * @param interfaceName pass in a interface name
      * @return return network interface object
      */
-    @SuppressWarnings("for-rollout:NullAway")
-    private NetworkInterface getInterface(String interfaceName) {
+        @SuppressWarnings("for-rollout:NullAway")
+        private NetworkInterface getInterface(String interfaceName) {
         try {
             final NetworkInterface checkingInterface = NetworkInterface.getByName(interfaceName);
             for (final InterfaceAddress interfaceAddress :
