@@ -138,8 +138,7 @@ public class BootRulesParser {
     @SuppressWarnings("for-rollout:NullAway")
     public BootRules loadRules(String fileData) {
         newRuleSet = new BootRules();
-        handleJson =
-                new JsonReader(new StringReader(fileData.replace("\\", "\\\\")));
+        handleJson = new JsonReader(new StringReader(fileData.replace("\\", "\\\\")));
         try {
             while (handleJson.hasNext()) {
                 JsonToken tempToken = handleJson.peek();
@@ -166,8 +165,8 @@ public class BootRulesParser {
 
         if ("compversion".equalsIgnoreCase(nextName)) {
             if (!checkVersionNumber(handleJson.nextString())) {
-                logger.simpleReport("Failed to load rules file, rules seem to be "
-                        + "from a unsupported version.", true);
+                logger.simpleReport(
+                        "Failed to load rules file, rules seem to be " + "from a unsupported version.", true);
                 return false;
             } else {
                 return true;
@@ -228,9 +227,7 @@ public class BootRulesParser {
             final int pos = newTempFileLoc.indexOf('\\');
             if (pos + 1 < newTempFileLoc.length()) {
                 if (newTempFileLoc.charAt(pos + 1) == '\\') {
-                    newTempFileLoc = newTempFileLoc.substring(0, pos)
-                            + newTempFileLoc.substring(
-                            pos + 1);
+                    newTempFileLoc = newTempFileLoc.substring(0, pos) + newTempFileLoc.substring(pos + 1);
                 }
             }
         }
@@ -342,15 +339,13 @@ public class BootRulesParser {
                 }
 
                 // The digit is not the same
-                if (Integer.parseInt(readSplitVal[i]) < Integer.parseInt(
-                        supportedSplitVal[i])) {
+                if (Integer.parseInt(readSplitVal[i]) < Integer.parseInt(supportedSplitVal[i])) {
                     // Read number is smaller than supported
                     return false;
                 } else {
                     // Read number is higher than supported, check against higher
                     for (int k = 0; k < readSplitVal.length; k++) {
-                        if (Integer.parseInt(readSplitVal[k]) == Integer.parseInt(
-                                currentSplitVal[k])) {
+                        if (Integer.parseInt(readSplitVal[k]) == Integer.parseInt(currentSplitVal[k])) {
                             continue;
                         }
                         // The digit is not the same

@@ -93,14 +93,15 @@ public class PxeService implements Runnable {
      * Listener for that port.
      */
     @Override
-    @SuppressWarnings("DnsLookup")  // This has worked for years, and errors with suggestions to change
+    @SuppressWarnings("DnsLookup") // This has worked for years, and errors with suggestions to change
     public void run() {
-        //Bug in jdk makes this take up to 30 seconds to respond
+        // Bug in jdk makes this take up to 30 seconds to respond
         final String hostname = getHostname();
         String tempInterfaceNames = getInterfaces();
         logger.simpleReport(
-                Thread.currentThread().getName() + " - Listener Starting on Port "
-                        + listenPort + ". Interfaces responding " + tempInterfaceNames, false);
+                Thread.currentThread().getName() + " - Listener Starting on Port " + listenPort
+                        + ". Interfaces responding " + tempInterfaceNames,
+                false);
         try (DatagramSocket udpSocket = new DatagramSocket(null)) {
             udpSocket.setBroadcast(true);
             udpSocket.setReuseAddress(true);
@@ -115,14 +116,14 @@ public class PxeService implements Runnable {
                 try {
                     udpSocket.receive(packet);
                 } catch (final IOException e) {
-                    //This happens whenever the timeout is hit
+                    // This happens whenever the timeout is hit
                     continue;
                 }
 
                 if (!PxeInteraction.validPacketToConvert(packet)) {
                     // Invalid Packet
-                    logger.simpleReport(Thread.currentThread().getName()
-                            + " - Invalid Packet came in, ignoring...", true);
+                    logger.simpleReport(
+                            Thread.currentThread().getName() + " - Invalid Packet came in, ignoring...", true);
                     continue;
                 }
                 final ProcessedPacket transformingOriginal = PxeInteraction.convertPacketToPretty(packet);
@@ -137,8 +138,9 @@ public class PxeService implements Runnable {
                             "",
                             Thread.currentThread().getName() + " - Packet did not request PxeService information",
                             packet.getAddress().toString() + "/"
-                                    + GeneralTools.hardwareMacToString(transformingOriginal.getClientHardwareAddress(),
-                                    transformingOriginal.getHardwareLength())
+                                    + GeneralTools.hardwareMacToString(
+                                            transformingOriginal.getClientHardwareAddress(),
+                                            transformingOriginal.getHardwareLength())
                                     + " - " + Thread.currentThread().getName()
                                     + " - packet did not request PxeService information",
                             false);
@@ -147,11 +149,12 @@ public class PxeService implements Runnable {
                 logger.report(
                         "",
                         "",
-                         "Packet Received",
+                        "Packet Received",
                         Thread.currentThread().getName() + "\tPacket Received",
                         packet.getAddress().toString() + "/"
-                                + GeneralTools.hardwareMacToString(transformingOriginal.getClientHardwareAddress(),
-                                transformingOriginal.getHardwareLength())
+                                + GeneralTools.hardwareMacToString(
+                                        transformingOriginal.getClientHardwareAddress(),
+                                        transformingOriginal.getHardwareLength())
                                 + " - " + Thread.currentThread().getName() + " - "
                                 + packet.getLength() + " Byte Packet Received",
                         false);
@@ -168,9 +171,11 @@ public class PxeService implements Runnable {
     private String getHostname() {
         String osName = System.getProperty("os.name").toLowerCase(Locale.ROOT);
         if (osName.contains("mac") || osName.contains("darwin")) {
-            logger.simpleReport(Thread.currentThread().getName()
-                    + " - MacOS Java seems to have a bug that delays some system variable retrieval "
-                    + "ONB needs, we will fetch those now.", false);
+            logger.simpleReport(
+                    Thread.currentThread().getName()
+                            + " - MacOS Java seems to have a bug that delays some system variable retrieval "
+                            + "ONB needs, we will fetch those now.",
+                    false);
         }
         try {
             return InetAddress.getLocalHost().getHostName();
@@ -194,8 +199,8 @@ public class PxeService implements Runnable {
         return tempInterfaceNames.toString();
     }
 
-    private void loopOverInterfacesAndSend(String hostname, ProcessedPacket transformingOriginal,
-                                           DatagramPacket packet, DatagramSocket udpSocket) {
+    private void loopOverInterfacesAndSend(
+            String hostname, ProcessedPacket transformingOriginal, DatagramPacket packet, DatagramSocket udpSocket) {
         try {
             final Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
             while (interfaces.hasMoreElements()) {
@@ -206,8 +211,7 @@ public class PxeService implements Runnable {
 
                 for (final String singleInt : interfaceName) {
                     if (networkInterface.getName().equals(singleInt)) {
-                        sendPacketForInterface(networkInterface,
-                                hostname, transformingOriginal, packet, udpSocket);
+                        sendPacketForInterface(networkInterface, hostname, transformingOriginal, packet, udpSocket);
                     }
                 }
             }
@@ -220,20 +224,17 @@ public class PxeService implements Runnable {
         }
     }
 
-    private void sendPacketForInterface(final NetworkInterface networkInterface,
-                                        String hostname, ProcessedPacket transformingOriginal,
-                                        DatagramPacket packet, DatagramSocket udpSocket) {
-        for (final InterfaceAddress interfaceAddress :
-                networkInterface.getInterfaceAddresses()) {
-            final PxeOptions interactionBootInfo = RuleSelector.ruleMaker(hostname,
-                    transformingOriginal,
-                    loadingRules,
-                    interfaceAddress.getAddress(),
-                    logger);
+    private void sendPacketForInterface(
+            final NetworkInterface networkInterface,
+            String hostname,
+            ProcessedPacket transformingOriginal,
+            DatagramPacket packet,
+            DatagramSocket udpSocket) {
+        for (final InterfaceAddress interfaceAddress : networkInterface.getInterfaceAddresses()) {
+            final PxeOptions interactionBootInfo = RuleSelector.ruleMaker(
+                    hostname, transformingOriginal, loadingRules, interfaceAddress.getAddress(), logger);
             final ProcessedPacket packetToReturn =
-                    PxeInteraction.genReplyPretty(
-                            transformingOriginal,
-                            interactionBootInfo);
+                    PxeInteraction.genReplyPretty(transformingOriginal, interactionBootInfo);
             if (packetToReturn == null) {
                 logger.simpleReport("Error processing packet", true);
                 return;
@@ -255,52 +256,64 @@ public class PxeService implements Runnable {
             try (DatagramChannel handle = DatagramChannel.open()) {
                 if (packet.getSocketAddress().toString().equals("/0:0:0:0:0:0:0:0:68")
                         || "/0.0.0.0:68".equals(packet.getSocketAddress().toString())) {
-                    //This came in from a broadcast
-                    processBroadcastDhcpPacket(handle, interfaceAddress, buildToShip, transformingOriginal, udpSocket,
-                            broadcast, interactionBootInfo);
+                    // This came in from a broadcast
+                    processBroadcastDhcpPacket(
+                            handle,
+                            interfaceAddress,
+                            buildToShip,
+                            transformingOriginal,
+                            udpSocket,
+                            broadcast,
+                            interactionBootInfo);
                 } else {
-                    //This is the second stage of boot data OR a DHCP relay
-                    processUnicastDhcpPacket(packet, buildToShip, transformingOriginal, udpSocket, networkInterface,
+                    // This is the second stage of boot data OR a DHCP relay
+                    processUnicastDhcpPacket(
+                            packet,
+                            buildToShip,
+                            transformingOriginal,
+                            udpSocket,
+                            networkInterface,
                             interactionBootInfo);
                 }
 
             } catch (final Exception e) {
-                logger.simpleReport(
-                        "ERROR PXE003: " + listenPort + e,
-                        true);
+                logger.simpleReport("ERROR PXE003: " + listenPort + e, true);
             }
         }
     }
 
-    private void sendNetworkBroadcast(DatagramChannel handle, InterfaceAddress interfaceAddress,
-                                      DatagramPacket buildToShip) throws IOException {
+    private void sendNetworkBroadcast(
+            DatagramChannel handle, InterfaceAddress interfaceAddress, DatagramPacket buildToShip) throws IOException {
         DatagramSocket socket = handle.socket();
         socket.setBroadcast(true);
         socket.setReuseAddress(true);
         socket.bind(new InetSocketAddress(interfaceAddress.getAddress(), 67));
 
-        buildToShip.setAddress(InetAddress.getByAddress(new byte[]{-1, -1, -1, -1}));
+        buildToShip.setAddress(InetAddress.getByAddress(new byte[] {-1, -1, -1, -1}));
         socket.send(buildToShip);
         socket.close();
     }
 
-    private void processBroadcastDhcpPacket(DatagramChannel handle, InterfaceAddress interfaceAddress,
-                                            DatagramPacket buildToShip, ProcessedPacket transformingOriginal,
-                                            DatagramSocket udpSocket, InetAddress broadcast,
-                                            final PxeOptions interactionBootInfo) throws IOException {
+    private void processBroadcastDhcpPacket(
+            DatagramChannel handle,
+            InterfaceAddress interfaceAddress,
+            DatagramPacket buildToShip,
+            ProcessedPacket transformingOriginal,
+            DatagramSocket udpSocket,
+            InetAddress broadcast,
+            final PxeOptions interactionBootInfo)
+            throws IOException {
         if (loadingRules.getBroadcastSetting() > 0) {
             sendNetworkBroadcast(handle, interfaceAddress, buildToShip);
         }
         // TODO(#2): this hasn't been tested with a real relay agent
-        if (!Arrays.equals(transformingOriginal.getRelayAgentIp(), new byte[]{0, 0, 0, 0})) {
-            //relay agent in use
-            buildToShip.setAddress(InetAddress.getByAddress(
-                    transformingOriginal.getRelayAgentIp()));
+        if (!Arrays.equals(transformingOriginal.getRelayAgentIp(), new byte[] {0, 0, 0, 0})) {
+            // relay agent in use
+            buildToShip.setAddress(InetAddress.getByAddress(transformingOriginal.getRelayAgentIp()));
             udpSocket.send(buildToShip);
             logger.simpleReport("Relay agent", false);
         } else {
-            if (loadingRules.getBroadcastSetting() == 0
-                    || loadingRules.getBroadcastSetting() == 2) {
+            if (loadingRules.getBroadcastSetting() == 0 || loadingRules.getBroadcastSetting() == 2) {
                 buildToShip.setAddress(broadcast);
                 udpSocket.send(buildToShip);
             }
@@ -322,20 +335,22 @@ public class PxeService implements Runnable {
                 false);
     }
 
-    private void processUnicastDhcpPacket(DatagramPacket packet, DatagramPacket buildToShip,
-                                          ProcessedPacket transformingOriginal, DatagramSocket udpSocket,
-                                          final NetworkInterface networkInterface,
-                                          final PxeOptions interactionBootInfo) throws IOException {
+    private void processUnicastDhcpPacket(
+            DatagramPacket packet,
+            DatagramPacket buildToShip,
+            ProcessedPacket transformingOriginal,
+            DatagramSocket udpSocket,
+            final NetworkInterface networkInterface,
+            final PxeOptions interactionBootInfo)
+            throws IOException {
         if (packet.getPort() == 67) {
-            //Unicast, stage 1
-            buildToShip.setAddress(
-                    InetAddress.getByAddress(transformingOriginal.getRelayAgentIp())
-            );
+            // Unicast, stage 1
+            buildToShip.setAddress(InetAddress.getByAddress(transformingOriginal.getRelayAgentIp()));
             buildToShip.setPort(67);
             udpSocket.send(buildToShip);
-            //Stopped here, this is experimental
+            // Stopped here, this is experimental
         } else {
-            //This is stage 2 of proxy DHCP
+            // This is stage 2 of proxy DHCP
             buildToShip.setAddress(packet.getAddress());
             buildToShip.setPort(4011);
             udpSocket.send(buildToShip);
@@ -343,8 +358,7 @@ public class PxeService implements Runnable {
                     "",
                     "",
                     "Response sent",
-                    "Unicast response sent from "
-                            + listenPort,
+                    "Unicast response sent from " + listenPort,
                     packet.getAddress().toString() + " - "
                             + Thread.currentThread().getName() + "\t"
                             + "Interface: " + networkInterface.getDisplayName()

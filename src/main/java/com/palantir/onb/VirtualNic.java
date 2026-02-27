@@ -40,8 +40,8 @@ import java.util.Scanner;
  * Interactive diagnostics for DHCP.
  */
 public final class VirtualNic implements Runnable {
-    //CHECKSTYLE.OFF: RegexpSinglelineJava
-    private static final byte[] myMac = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
+    // CHECKSTYLE.OFF: RegexpSinglelineJava
+    private static final byte[] myMac = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
     private NetworkInterface myInterface;
     private InterfaceAddress primaryInet;
     private final List<ProcessedPacket> datastore = new ArrayList<>();
@@ -118,8 +118,7 @@ public final class VirtualNic implements Runnable {
         System.out.println("\tlsint - List interfaces");
         System.out.println("\tsetint - Set interface to use");
         System.out.println("\t");
-        System.out.println(
-                "\tRun 'randmac', then 'lsint' find the interface you want,"
+        System.out.println("\tRun 'randmac', then 'lsint' find the interface you want,"
                 + " then 'setint %interface'; finally 'dhclient'.");
         System.out.println("\t");
     }
@@ -138,16 +137,13 @@ public final class VirtualNic implements Runnable {
 
     private void printInts() {
         try {
-            final Enumeration<NetworkInterface> interfaces =
-                    NetworkInterface.getNetworkInterfaces();
+            final Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
             while (interfaces.hasMoreElements()) {
                 final NetworkInterface networkInterface = interfaces.nextElement();
-                System.out.println(
-                        "Interface \"" + networkInterface.getDisplayName() + "\" - "
-                                + networkInterface.getName() + " - Online:"
-                                + networkInterface.isUp());
-                final List<InterfaceAddress> listingAddresses =
-                        networkInterface.getInterfaceAddresses();
+                System.out.println("Interface \"" + networkInterface.getDisplayName() + "\" - "
+                        + networkInterface.getName() + " - Online:"
+                        + networkInterface.isUp());
+                final List<InterfaceAddress> listingAddresses = networkInterface.getInterfaceAddresses();
                 for (final InterfaceAddress singleAddress : listingAddresses) {
                     System.out.println("\t" + singleAddress.getAddress().getHostAddress());
                 }
@@ -166,8 +162,7 @@ public final class VirtualNic implements Runnable {
     private NetworkInterface getInterface(String interfaceName) {
         try {
             final NetworkInterface checkingInterface = NetworkInterface.getByName(interfaceName);
-            for (final InterfaceAddress interfaceAddress :
-                    checkingInterface.getInterfaceAddresses()) {
+            for (final InterfaceAddress interfaceAddress : checkingInterface.getInterfaceAddresses()) {
                 if (interfaceAddress.getBroadcast() != null) {
                     primaryInet = interfaceAddress;
                 }
@@ -186,7 +181,7 @@ public final class VirtualNic implements Runnable {
         final DhcpOption discovery = new DhcpOption();
         discovery.setLength((byte) 1);
         discovery.setOption((byte) 0x35);
-        final byte[] discover = { 1 };
+        final byte[] discover = {1};
         discovery.setPayload(discover);
 
         dhcpRequest.getActiveOptions().add(discovery);
@@ -195,7 +190,7 @@ public final class VirtualNic implements Runnable {
         requestedParts.setOption((byte) 0x37);
         requestedParts.setLength((byte) 5);
         // subnet, router, Request Ip, ip lease, dhcp id
-        final byte[] parts = { 1, 3, 50, 51, 54 };
+        final byte[] parts = {1, 3, 50, 51, 54};
         requestedParts.setPayload(parts);
 
         dhcpRequest.getActiveOptions().add(requestedParts);
@@ -242,16 +237,13 @@ public final class VirtualNic implements Runnable {
         System.out.println("IP: \t\t" + GeneralTools.arrayToString(convertedToNice.getYourIp()));
         DhcpOption routerLoc = PxeInteraction.getOption(convertedToNice, (byte) 1);
         if (routerLoc != null) {
-            System.out.println(
-                    "Subnet: \t" + GeneralTools.arrayToString(routerLoc.getPayload()));
+            System.out.println("Subnet: \t" + GeneralTools.arrayToString(routerLoc.getPayload()));
         }
-        System.out.println(
-                "Gateway: \t" + GeneralTools.arrayToString(convertedToNice.getNextServer()));
+        System.out.println("Gateway: \t" + GeneralTools.arrayToString(convertedToNice.getNextServer()));
         System.out.println();
         routerLoc = PxeInteraction.getOption(convertedToNice, (byte) 54);
         if (routerLoc != null) {
-            System.out.println(
-                    "DHCP server: \t" + GeneralTools.arrayToString(routerLoc.getPayload()));
+            System.out.println("DHCP server: \t" + GeneralTools.arrayToString(routerLoc.getPayload()));
         }
     }
 
@@ -261,13 +253,13 @@ public final class VirtualNic implements Runnable {
         dhcpRequest.setHardwareType((byte) 0x1);
         dhcpRequest.setHardwareLength((byte) 0x6);
         dhcpRequest.setHopNum((byte) 0x0);
-        final byte[] transId = { myMac[2], myMac[3], myMac[4], myMac[5] };
+        final byte[] transId = {myMac[2], myMac[3], myMac[4], myMac[5]};
         dhcpRequest.setTransactionId(transId);
-        final byte[] time = { 0x00, 0x01 };
+        final byte[] time = {0x00, 0x01};
         dhcpRequest.setSecondsPassed(time);
-        final byte[] flags = { (byte) 128, 0x00 };
+        final byte[] flags = {(byte) 128, 0x00};
         dhcpRequest.setFlags(flags);
-        final byte[] blankIp = { 0x00, 0x00, 0x00, 0x00 };
+        final byte[] blankIp = {0x00, 0x00, 0x00, 0x00};
         dhcpRequest.setClientIp(blankIp);
         dhcpRequest.setRelayAgentIp(primaryInet.getAddress().getAddress());
         dhcpRequest.setNextServer(blankIp);

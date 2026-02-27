@@ -397,7 +397,7 @@ public class ProcessedPacket {
         boolean needsResponse = false;
         switch (requestOption) {
             case (byte) 67, (byte) 129, (byte) 130, (byte) 131, (byte) 132, (byte) 133, (byte) 134, (byte) 135 ->
-                    needsResponse = true;
+                needsResponse = true;
         }
         return needsResponse;
     }

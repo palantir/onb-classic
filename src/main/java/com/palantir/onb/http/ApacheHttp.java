@@ -99,11 +99,10 @@ public class ApacheHttp implements Runnable {
         final Context ctx = tomcat.addContext("/", folderLoc.getAbsolutePath());
 
         try {
-            final Wrapper home =
-                    Tomcat.addServlet(ctx, "homeServlet", "com.palantir.onb.http.Home");
+            final Wrapper home = Tomcat.addServlet(ctx, "homeServlet", "com.palantir.onb.http.Home");
             home.addInitParameter("folder", folderLoc.getAbsolutePath());
 
-            //Different loggers need different startup info
+            // Different loggers need different startup info
             home.addInitParameter("loggerC", Integer.toString(localLogger.getLogConsole()));
             home.addInitParameter("loggerF", Integer.toString(localLogger.getLogFile()));
             home.addInitParameter("logger", Integer.toString(logger));
@@ -111,8 +110,7 @@ public class ApacheHttp implements Runnable {
 
             ctx.addServletMappingDecoded("/", "homeServlet");
             localLogger.simpleReport(
-                    "HTTP - Starting server on port " + startPort + ". Responding on all interfaces.",
-                    false);
+                    "HTTP - Starting server on port " + startPort + ". Responding on all interfaces.", false);
             localLogger.report(
                     "",
                     "",
@@ -123,7 +121,7 @@ public class ApacheHttp implements Runnable {
 
             tomcat.setSilent(true);
 
-            //Below is commented out code that works for starting with HTTPS, one day that will be made to work
+            // Below is commented out code that works for starting with HTTPS, one day that will be made to work
             final Connector setupConnector = tomcat.getConnector();
             setupConnector.setProperty("maxKeepAliveRequests", "1");
             // setupConnector.setSecure(true);

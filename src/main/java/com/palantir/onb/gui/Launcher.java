@@ -15,7 +15,7 @@
  */
 
 package com.palantir.onb.gui;
-//CHECKSTYLE.OFF: IllegalImport
+// CHECKSTYLE.OFF: IllegalImport
 import com.palantir.onb.Manager;
 import java.awt.Taskbar;
 import java.awt.Toolkit;
@@ -26,7 +26,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-//CHECKSTYLE.ON: IllegalImport
+// CHECKSTYLE.ON: IllegalImport
 
 /**
  * GUI launcher.
@@ -44,8 +44,8 @@ public class Launcher extends Application {
             try {
                 Taskbar taskbar = Taskbar.getTaskbar();
                 if (taskbar.isSupported(Taskbar.Feature.ICON_IMAGE)) {
-                    java.awt.Image image = Toolkit.getDefaultToolkit()
-                            .getImage(getClass().getResource("/logo.png"));
+                    java.awt.Image image =
+                            Toolkit.getDefaultToolkit().getImage(getClass().getResource("/logo.png"));
                     taskbar.setIconImage(image);
                 }
             } catch (Exception e) {

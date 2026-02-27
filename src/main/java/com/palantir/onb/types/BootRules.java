@@ -323,14 +323,12 @@ public class BootRules {
 
         jsonReturnData.endObject();
 
-
         jsonReturnData.name("pxerules").beginArray();
 
         for (BootRule aRuleSet : ruleSet) {
             jsonReturnData.beginObject();
             if (!aRuleSet.getHardwareAddress().isEmpty()) {
-                jsonReturnData.name("hardwareid").value(
-                        aRuleSet.getHardwareAddress());
+                jsonReturnData.name("hardwareid").value(aRuleSet.getHardwareAddress());
             }
 
             if (!aRuleSet.getClient().isEmpty()) {

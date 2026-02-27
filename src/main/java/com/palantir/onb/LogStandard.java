@@ -38,12 +38,7 @@ public interface LogStandard {
 
     void simpleReport(String allLevels, boolean reportingError);
 
-    void report(String level0,
-                       String level1,
-                       String level2,
-                       String level3,
-                       String level4,
-                       boolean reportingError);
+    void report(String level0, String level1, String level2, String level3, String level4, boolean reportingError);
 
     List<TimeStampedLog> getLogNDump();
 

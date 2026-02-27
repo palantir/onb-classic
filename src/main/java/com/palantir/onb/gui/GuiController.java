@@ -15,9 +15,9 @@
  */
 
 package com.palantir.onb.gui;
-//CHECKSTYLE.OFF: IllegalImport
-//CHECKSTYLE.OFF: AvoidStarImport
-//There are too many packages with JavaFX to do this
+// CHECKSTYLE.OFF: IllegalImport
+// CHECKSTYLE.OFF: AvoidStarImport
+// There are too many packages with JavaFX to do this
 
 import com.palantir.onb.Core;
 import com.palantir.onb.GeneralTools;
@@ -77,7 +77,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import javax.imageio.ImageIO;
-//CHECKSTYLE.ON: IllegalImport
+// CHECKSTYLE.ON: IllegalImport
 
 /**
  * Controller for the JavaFX GUI.
@@ -150,17 +150,22 @@ public class GuiController {
         initGeneralTable();
 
         Task<Void> pxeTask = new Task<>() {
-            @Override public Void call() {
-                AnchorPane anchorPane = (AnchorPane) logsTabPane.getTabs().getFirst().getContent();
+            @Override
+            public Void call() {
+                AnchorPane anchorPane =
+                        (AnchorPane) logsTabPane.getTabs().getFirst().getContent();
                 ObservableList<Node> children = anchorPane.getChildren();
                 TextArea textArea = (TextArea) children.getFirst();
-                AnchorPane dhcpAnchor = (AnchorPane) logsTabPane.getTabs().get(1).getContent();
+                AnchorPane dhcpAnchor =
+                        (AnchorPane) logsTabPane.getTabs().get(1).getContent();
                 ObservableList<Node> dhcpChildren = dhcpAnchor.getChildren();
                 TextArea dhcpTextArea = (TextArea) dhcpChildren.getFirst();
-                AnchorPane tftpAnchor = (AnchorPane) logsTabPane.getTabs().get(2).getContent();
+                AnchorPane tftpAnchor =
+                        (AnchorPane) logsTabPane.getTabs().get(2).getContent();
                 ObservableList<Node> tftpChildren = tftpAnchor.getChildren();
                 TextArea tftpTextArea = (TextArea) tftpChildren.getFirst();
-                AnchorPane httpAnchor = (AnchorPane) logsTabPane.getTabs().get(3).getContent();
+                AnchorPane httpAnchor =
+                        (AnchorPane) logsTabPane.getTabs().get(3).getContent();
                 ObservableList<Node> httpChildren = httpAnchor.getChildren();
                 TextArea httpTextArea = (TextArea) httpChildren.getFirst();
                 while (!closing) {
@@ -206,10 +211,8 @@ public class GuiController {
      */
     private void addToTextArea(TextArea textArea, TextArea specificTextArea, List<LogStandard.TimeStampedLog> logs) {
         for (LogStandard.TimeStampedLog singleLogLine : logs) {
-            Platform.runLater(
-                    () -> textArea.appendText(singleLogLine.getLog() + System.lineSeparator()));
-            Platform.runLater(
-                    () -> specificTextArea.appendText(singleLogLine.getLog() + System.lineSeparator()));
+            Platform.runLater(() -> textArea.appendText(singleLogLine.getLog() + System.lineSeparator()));
+            Platform.runLater(() -> specificTextArea.appendText(singleLogLine.getLog() + System.lineSeparator()));
             addToHashMaps(singleLogLine.getLog(), singleLogLine.getTimestamp());
         }
     }
@@ -285,7 +288,8 @@ public class GuiController {
     @SuppressWarnings("unchecked")
     private void initGeneralTable() {
         AnchorPane mainPageAnchor = (AnchorPane) mainTabPanel.getTabs().get(0).getContent();
-        TableView<GeneralSystemRow> generalTable = (TableView<GeneralSystemRow>) mainPageAnchor.getChildren().get(0);
+        TableView<GeneralSystemRow> generalTable =
+                (TableView<GeneralSystemRow>) mainPageAnchor.getChildren().get(0);
         generalTable.setEditable(false);
         TableColumn<GeneralSystemRow, String> macCol = new TableColumn<>("MAC");
         macCol.setCellValueFactory(new PropertyValueFactory<>("mac"));
@@ -312,7 +316,8 @@ public class GuiController {
     @SuppressWarnings("unchecked")
     private void drawGeneralTable() {
         AnchorPane mainPageAnchor = (AnchorPane) mainTabPanel.getTabs().get(0).getContent();
-        TableView<GeneralSystemRow> generalTable = (TableView<GeneralSystemRow>) mainPageAnchor.getChildren().get(0);
+        TableView<GeneralSystemRow> generalTable =
+                (TableView<GeneralSystemRow>) mainPageAnchor.getChildren().get(0);
         generalTable.setEditable(false);
 
         for (Map.Entry<String, PcTracker> item : generalSystems.entrySet()) {
@@ -334,8 +339,13 @@ public class GuiController {
                 }
             }
             if (!found) {
-                generalTable.getItems().add(new GeneralSystemRow(item.getKey(), item.getValue().getIp(),
-                        item.getValue().getService(), item.getValue().getDateTime()));
+                generalTable
+                        .getItems()
+                        .add(new GeneralSystemRow(
+                                item.getKey(),
+                                item.getValue().getIp(),
+                                item.getValue().getService(),
+                                item.getValue().getDateTime()));
             }
             item.getValue().setUpdated(false);
         }
@@ -344,21 +354,24 @@ public class GuiController {
     /**
      * Change view to general.
      */
-    @FXML protected void changeToGeneralView() {
+    @FXML
+    protected void changeToGeneralView() {
         changeView(0, "generalButton");
     }
 
     /**
      * Change view to logs.
      */
-    @FXML protected void changeToLogsView() {
+    @FXML
+    protected void changeToLogsView() {
         changeView(1, "logsButton");
     }
 
     /**
      * Change view to options.
      */
-    @FXML protected void changeToOptionsView() {
+    @FXML
+    protected void changeToOptionsView() {
         changeView(2, "optionsButton");
         loadOptionsStatus();
     }
@@ -366,7 +379,8 @@ public class GuiController {
     /**
      * Change if DHCP should start with app startup.
      */
-    @FXML protected void changeDhcpStartSetting() {
+    @FXML
+    protected void changeDhcpStartSetting() {
         Node setting = getSettingsItem("dhcpAutostart");
         CheckBox settings = (CheckBox) setting;
         if (settings == null) {
@@ -380,7 +394,8 @@ public class GuiController {
     /**
      * Change if Tftp should start at app startup.
      */
-    @FXML protected void changeTftpStartSetting() {
+    @FXML
+    protected void changeTftpStartSetting() {
         Node setting = getSettingsItem("tftpAutostart");
         CheckBox settings = (CheckBox) setting;
         if (settings == null) {
@@ -394,7 +409,8 @@ public class GuiController {
     /**
      * Change if Http should start with app.
      */
-    @FXML protected void changeHttpStartSetting() {
+    @FXML
+    protected void changeHttpStartSetting() {
         Node setting = getSettingsItem("httpAutostart");
         CheckBox settings = (CheckBox) setting;
         if (settings == null) {
@@ -408,7 +424,8 @@ public class GuiController {
     /**
      * Change if ISO/Zip files are allowed to be opened and processed.
      */
-    @FXML protected void changeIsoExtractingSetting() {
+    @FXML
+    protected void changeIsoExtractingSetting() {
         Node setting = getSettingsItem("allowIsoExtracting");
         CheckBox settings = (CheckBox) setting;
         if (settings == null) {
@@ -425,17 +442,20 @@ public class GuiController {
     /**
      * Add a rule to the current configuration, then save it to the startup rules.onr.
      */
-    @FXML protected void addRule() {
+    @FXML
+    protected void addRule() {
         ListView<String> list = getRulesView();
         int itemIndex = -1;
-        if (!loadingPanel || !editingTable || (list != null
-                && (list.getSelectionModel().getSelectedIndices().size() > 0))) {
+        if (!loadingPanel
+                || !editingTable
+                || (list != null
+                        && (list.getSelectionModel().getSelectedIndices().size() > 0))) {
             itemIndex = list.getSelectionModel().getSelectedIndices().get(0);
         }
 
         BootRule bootRule = new BootRule();
         if (itemIndex == -1) {
-            //No item selected, just add to end of the rules
+            // No item selected, just add to end of the rules
             manager.getRunningRules().getRuleSet().add(bootRule);
             manager.saveSettingsFile();
             loadOptionsListDraw(getRulesView());
@@ -443,7 +463,8 @@ public class GuiController {
                 pxeLogger.simpleReport("Error parsing settings to save", true);
                 return;
             }
-            list.getSelectionModel().selectIndices(manager.getRunningRules().getRuleSet().size());
+            list.getSelectionModel()
+                    .selectIndices(manager.getRunningRules().getRuleSet().size());
         } else {
             manager.getRunningRules().getRuleSet().add(itemIndex + 1, bootRule);
             manager.saveSettingsFile();
@@ -455,9 +476,12 @@ public class GuiController {
     /**
      * Move a rule up in the processing order.
      */
-    @FXML protected void moveRuleUp() {
+    @FXML
+    protected void moveRuleUp() {
         ListView<String> list = getRulesView();
-        if (loadingPanel || editingTable || list == null
+        if (loadingPanel
+                || editingTable
+                || list == null
                 || list.getSelectionModel().getSelectedIndices().get(0) == null
                 || list.getSelectionModel().getSelectedIndices().get(0) == -1) {
             return;
@@ -475,9 +499,12 @@ public class GuiController {
     /**
      * Move a rule down in the processing order.
      */
-    @FXML protected void moveRuleDown() {
-        ListView<String>  list = getRulesView();
-        if (loadingPanel || editingTable || list == null
+    @FXML
+    protected void moveRuleDown() {
+        ListView<String> list = getRulesView();
+        if (loadingPanel
+                || editingTable
+                || list == null
                 || list.getSelectionModel().getSelectedIndices().get(0) == null
                 || list.getSelectionModel().getSelectedIndices().get(0) == -1) {
             return;
@@ -495,9 +522,12 @@ public class GuiController {
     /**
      * Delete a rule from rule list.
      */
-    @FXML protected void removeRule() {
+    @FXML
+    protected void removeRule() {
         ListView<String> list = getRulesView();
-        if (loadingPanel || editingTable || list == null
+        if (loadingPanel
+                || editingTable
+                || list == null
                 || list.getSelectionModel().getSelectedIndices().get(0) == null
                 || list.getSelectionModel().getSelectedIndices().get(0) == -1) {
             return;
@@ -548,7 +578,8 @@ public class GuiController {
     @SuppressWarnings("unchecked")
     private void loadOptionsStatus() {
         loadingPanel = true;
-        AnchorPane settingsOuterAnchor = (AnchorPane) mainTabPanel.getTabs().get(2).getContent();
+        AnchorPane settingsOuterAnchor =
+                (AnchorPane) mainTabPanel.getTabs().get(2).getContent();
         AnchorPane settingsInnerAnchor =
                 (AnchorPane) ((ScrollPane) settingsOuterAnchor.getChildren().get(0)).getContent();
         ObservableList<Node> list = settingsInnerAnchor.getChildren();
@@ -567,13 +598,13 @@ public class GuiController {
     private void loadOptionsCheckBoxes(CheckBox passedCheck) {
         switch (passedCheck.getId()) {
             case "dhcpAutostart" ->
-                    passedCheck.setSelected(manager.getRunningRules().getEnablePxe() == 2);
+                passedCheck.setSelected(manager.getRunningRules().getEnablePxe() == 2);
             case "tftpAutostart" ->
-                    passedCheck.setSelected(manager.getRunningRules().getEnableTftp() == 2);
+                passedCheck.setSelected(manager.getRunningRules().getEnableTftp() == 2);
             case "httpAutostart" ->
-                    passedCheck.setSelected(manager.getRunningRules().getEnableHttp() == 2);
+                passedCheck.setSelected(manager.getRunningRules().getEnableHttp() == 2);
             case "allowIsoExtracting" ->
-                    passedCheck.setSelected(manager.getRunningRules().isAllowIsoExtracting());
+                passedCheck.setSelected(manager.getRunningRules().isAllowIsoExtracting());
         }
     }
 
@@ -589,8 +620,8 @@ public class GuiController {
 
         passedTable.getItems().clear();
         passedTable.setEditable(true);
-        Callback<TableColumn<InterfaceDevice, Boolean>, TableCell<InterfaceDevice, Boolean>> booleanCellFactory
-                = _p -> new BooleanCell();
+        Callback<TableColumn<InterfaceDevice, Boolean>, TableCell<InterfaceDevice, Boolean>> booleanCellFactory =
+                _p -> new BooleanCell();
         TableColumn<InterfaceDevice, Boolean> enabledCol = new TableColumn<>("Enabled");
         enabledCol.setCellValueFactory(new PropertyValueFactory<>("enabled"));
         enabledCol.setCellFactory(booleanCellFactory);
@@ -624,8 +655,9 @@ public class GuiController {
                 ips.append(GeneralTools.arrayToString(inetAddress.getAddress()));
                 ips.append(", ");
             }
-            passedTable.getItems().add(new InterfaceDevice(activeInterface(networkInterface.getName()),
-                    name, ips.toString()));
+            passedTable
+                    .getItems()
+                    .add(new InterfaceDevice(activeInterface(networkInterface.getName()), name, ips.toString()));
         }
     }
 
@@ -643,7 +675,7 @@ public class GuiController {
         return false;
     }
 
-    //CHECKSTYLE.OFF: CyclomaticComplexity
+    // CHECKSTYLE.OFF: CyclomaticComplexity
     /**
      * Load the text boxes on the options screen.
      * @param passedTextField which text field to set
@@ -657,44 +689,44 @@ public class GuiController {
             case "ruleMacSetable" -> loadOptionsTextFieldMac(passedTextField);
             case "ruleArchSelectable" -> loadOptionsTextFieldArch(passedTextField);
             case "ruleFileSetable" ->
-                    passedTextField.textProperty().addListener((_observable, _oldValue, newValue) -> {
-                        ListView<String> list = getRulesView();
-                        if (loadingPanel
-                                || editingTable
-                                || list == null
-                                || newValue == null
-                                || list.getSelectionModel().getSelectedIndices().isEmpty()
-                                || list.getSelectionModel().getSelectedIndices().get(0) == -1) {
-                            return;
-                        }
-                        manager.getRunningRules()
-                                .getRuleSet()
-                                .get(list.getSelectionModel().getSelectedIndices().get(0))
-                                .setBootFile(newValue);
-                        manager.saveSettingsFile();
-                        loadOptionsListDraw(getRulesView());
-                    });
+                passedTextField.textProperty().addListener((_observable, _oldValue, newValue) -> {
+                    ListView<String> list = getRulesView();
+                    if (loadingPanel
+                            || editingTable
+                            || list == null
+                            || newValue == null
+                            || list.getSelectionModel().getSelectedIndices().isEmpty()
+                            || list.getSelectionModel().getSelectedIndices().get(0) == -1) {
+                        return;
+                    }
+                    manager.getRunningRules()
+                            .getRuleSet()
+                            .get(list.getSelectionModel().getSelectedIndices().get(0))
+                            .setBootFile(newValue);
+                    manager.saveSettingsFile();
+                    loadOptionsListDraw(getRulesView());
+                });
             case "ruleServerSetable" ->
-                    passedTextField.textProperty().addListener((_observable, _oldValue, newValue) -> {
-                        ListView<String> list = getRulesView();
-                        if (loadingPanel
-                                || editingTable
-                                || list == null
-                                || newValue == null
-                                || list.getSelectionModel().getSelectedIndices().isEmpty()
-                                || list.getSelectionModel().getSelectedIndices().get(0) == -1) {
-                            return;
-                        }
-                        manager.getRunningRules()
-                                .getRuleSet()
-                                .get(list.getSelectionModel().getSelectedIndices().get(0))
-                                .setServerIp(newValue);
-                        manager.saveSettingsFile();
-                        loadOptionsListDraw(getRulesView());
-                    });
+                passedTextField.textProperty().addListener((_observable, _oldValue, newValue) -> {
+                    ListView<String> list = getRulesView();
+                    if (loadingPanel
+                            || editingTable
+                            || list == null
+                            || newValue == null
+                            || list.getSelectionModel().getSelectedIndices().isEmpty()
+                            || list.getSelectionModel().getSelectedIndices().get(0) == -1) {
+                        return;
+                    }
+                    manager.getRunningRules()
+                            .getRuleSet()
+                            .get(list.getSelectionModel().getSelectedIndices().get(0))
+                            .setServerIp(newValue);
+                    manager.saveSettingsFile();
+                    loadOptionsListDraw(getRulesView());
+                });
         }
     }
-    //CHECKSTYLE.ON
+    // CHECKSTYLE.ON
 
     private void loadOptionsTextFieldLocation(TextField passedTextField) {
         passedTextField.textProperty().setValue(manager.getRunningRules().getLastFileLogLoc());
@@ -709,10 +741,15 @@ public class GuiController {
     }
 
     private void loadOptionsTextFieldHttp(TextField passedTextField) {
-        passedTextField.textProperty().setValue(Integer.toString(manager.getRunningRules().getHttpPort()));
+        passedTextField
+                .textProperty()
+                .setValue(Integer.toString(manager.getRunningRules().getHttpPort()));
         passedTextField.textProperty().addListener((_observable, _oldValue, newValue) -> {
             ListView<String> list = getRulesView();
-            if (loadingPanel || list == null  || newValue == null || newValue.isEmpty()
+            if (loadingPanel
+                    || list == null
+                    || newValue == null
+                    || newValue.isEmpty()
                     || list.getSelectionModel().getSelectedIndices().get(0) == null) {
                 return;
             }
@@ -725,11 +762,17 @@ public class GuiController {
     }
 
     private void loadOptionsTextFieldTftp(TextField passedTextField) {
-        passedTextField.textProperty().setValue(
-                manager.getRunningRules().getTftpSettingSet().getRootFs().getPath());
+        passedTextField
+                .textProperty()
+                .setValue(manager.getRunningRules()
+                        .getTftpSettingSet()
+                        .getRootFs()
+                        .getPath());
         passedTextField.textProperty().addListener((_observable, _oldValue, newValue) -> {
             ListView<String> list = getRulesView();
-            if (loadingPanel || list == null || newValue == null
+            if (loadingPanel
+                    || list == null
+                    || newValue == null
                     || list.getSelectionModel().getSelectedIndices().get(0) == null) {
                 return;
             }
@@ -747,13 +790,18 @@ public class GuiController {
     private void loadOptionsTextFieldClientId(TextField passedTextField) {
         passedTextField.textProperty().addListener((_observable, _oldValue, newValue) -> {
             ListView<String> list = getRulesView();
-            if (loadingPanel || editingTable || list == null || newValue == null
+            if (loadingPanel
+                    || editingTable
+                    || list == null
+                    || newValue == null
                     || list.getSelectionModel().getSelectedIndices().isEmpty()
                     || list.getSelectionModel().getSelectedIndices().get(0) == -1) {
                 return;
             }
-            manager.getRunningRules().getRuleSet().get(
-                    list.getSelectionModel().getSelectedIndices().get(0)).setClient(newValue);
+            manager.getRunningRules()
+                    .getRuleSet()
+                    .get(list.getSelectionModel().getSelectedIndices().get(0))
+                    .setClient(newValue);
             manager.saveSettingsFile();
             loadOptionsListDraw(getRulesView());
         });
@@ -762,13 +810,18 @@ public class GuiController {
     private void loadOptionsTextFieldMac(TextField passedTextField) {
         passedTextField.textProperty().addListener((_observable, _oldValue, newValue) -> {
             ListView<String> list = getRulesView();
-            if (loadingPanel || editingTable || list == null || newValue == null
+            if (loadingPanel
+                    || editingTable
+                    || list == null
+                    || newValue == null
                     || list.getSelectionModel().getSelectedIndices().isEmpty()
                     || list.getSelectionModel().getSelectedIndices().get(0) == -1) {
                 return;
             }
-            manager.getRunningRules().getRuleSet().get(
-                    list.getSelectionModel().getSelectedIndices().get(0)).setHardwareAddress(newValue);
+            manager.getRunningRules()
+                    .getRuleSet()
+                    .get(list.getSelectionModel().getSelectedIndices().get(0))
+                    .setHardwareAddress(newValue);
             manager.saveSettingsFile();
             loadOptionsListDraw(getRulesView());
         });
@@ -778,14 +831,17 @@ public class GuiController {
         passedTextField.textProperty().addListener((_observable, oldValue, newValue) -> {
             String replacementValue = newValue;
             ListView<String> list = getRulesView();
-            if (loadingPanel || editingTable || list == null  || replacementValue == null
+            if (loadingPanel
+                    || editingTable
+                    || list == null
+                    || replacementValue == null
                     || list.getSelectionModel().getSelectedIndices().isEmpty()
                     || list.getSelectionModel().getSelectedIndices().get(0) == -1) {
                 return;
             }
 
             if (oldValue.length() == (replacementValue.length() + 1) && oldValue.startsWith(replacementValue)) {
-                //User has deleted 1 character, its probably a ',', and user didn't delete a character in the mid
+                // User has deleted 1 character, its probably a ',', and user didn't delete a character in the mid
                 replacementValue = replacementValue.substring(0, replacementValue.lastIndexOf(','));
             }
 
@@ -795,13 +851,14 @@ public class GuiController {
                     try {
                         newArchs.add(Integer.parseInt(replacementValue.split(",", -1)[i]));
                     } catch (NumberFormatException e) {
-                        //This doesnt matter at all
+                        // This doesnt matter at all
                     }
                 }
             }
 
-            manager.getRunningRules().getRuleSet().get(
-                    list.getSelectionModel().getSelectedIndices().get(0))
+            manager.getRunningRules()
+                    .getRuleSet()
+                    .get(list.getSelectionModel().getSelectedIndices().get(0))
                     .setHardwareTypes(newArchs.stream().mapToInt(i -> i).toArray());
             manager.saveSettingsFile();
             loadOptionsListDraw(getRulesView());
@@ -820,15 +877,14 @@ public class GuiController {
         switch (passedCombo.getId()) {
             case "logLevel" -> {
                 String[] logStringOptions = {
-                        "0 - Say when the system starts and stops, NO FILE LOGGING",
-                        "1 - Say when ports come up, no other info",
-                        "2 - Echo out when a packet is received, and simple response",
-                        "3 - More in depth info about packet and response",
-                        "4 - Most verbose level of output"
+                    "0 - Say when the system starts and stops, NO FILE LOGGING",
+                    "1 - Say when ports come up, no other info",
+                    "2 - Echo out when a packet is received, and simple response",
+                    "3 - More in depth info about packet and response",
+                    "4 - Most verbose level of output"
                 };
 
-                ObservableList<String> logOptions =
-                        FXCollections.observableArrayList(logStringOptions);
+                ObservableList<String> logOptions = FXCollections.observableArrayList(logStringOptions);
                 passedCombo.setItems(logOptions);
                 passedCombo.setValue(logStringOptions[manager.getRunningRules().getLastConsoleLogLvl()]);
                 passedCombo.valueProperty().addListener((_observable, _oldValue, newValue) -> {
@@ -844,15 +900,15 @@ public class GuiController {
             }
             case "broadcastTypeSelectable" -> {
                 String[] broadcastStringOptions = {
-                        "0 - Send to network broadcast",
-                        "1 - Send to global broadcast",
-                        "2 - Send to network and global broadcast"
+                    "0 - Send to network broadcast",
+                    "1 - Send to global broadcast",
+                    "2 - Send to network and global broadcast"
                 };
 
-                ObservableList<String> broadcastOptions =
-                        FXCollections.observableArrayList(broadcastStringOptions);
+                ObservableList<String> broadcastOptions = FXCollections.observableArrayList(broadcastStringOptions);
                 passedCombo.setItems(broadcastOptions);
-                passedCombo.setValue(broadcastStringOptions[manager.getRunningRules().getBroadcastSetting()]);
+                passedCombo.setValue(
+                        broadcastStringOptions[manager.getRunningRules().getBroadcastSetting()]);
                 passedCombo.valueProperty().addListener((_observable, _oldValue, newValue) -> {
                     if (loadingPanel || newValue == null) {
                         return;
@@ -876,22 +932,23 @@ public class GuiController {
         editingTable = true;
 
         loadOptionsListDraw(passedList);
-        passedList.getSelectionModel().selectedItemProperty().addListener(
-                (_observable, _oldValue, _newValue) -> {
-                if (loadingPanel || editingTable || passedList.getSelectionModel().getSelectedIndices().isEmpty()) {
-                    return;
-                }
-                if (passedList.getSelectionModel().getSelectedIndices().isEmpty()) {
-                    drawRuleInfo(-1);
-                } else {
-                    int rowTracker = passedList.getSelectionModel().getSelectedIndices().get(0);
-                    if (rowTracker < 0) {
-                        rowTracker = 0;
-                    }
-                    drawRuleInfo(rowTracker);
-                }
+        passedList.getSelectionModel().selectedItemProperty().addListener((_observable, _oldValue, _newValue) -> {
+            if (loadingPanel
+                    || editingTable
+                    || passedList.getSelectionModel().getSelectedIndices().isEmpty()) {
+                return;
             }
-        );
+            if (passedList.getSelectionModel().getSelectedIndices().isEmpty()) {
+                drawRuleInfo(-1);
+            } else {
+                int rowTracker =
+                        passedList.getSelectionModel().getSelectedIndices().get(0);
+                if (rowTracker < 0) {
+                    rowTracker = 0;
+                }
+                drawRuleInfo(rowTracker);
+            }
+        });
 
         editingTable = false;
     }
@@ -973,11 +1030,12 @@ public class GuiController {
         }
 
         editingTable = true;
-        //We are only ever going to draw 1
+        // We are only ever going to draw 1
         BootRule operatingRule = manager.getRunningRules().getRuleSet().get(index);
-        AnchorPane settingsOuterAnchor = (AnchorPane) mainTabPanel.getTabs().get(2).getContent();
-        AnchorPane settingsInnerAnchor = (AnchorPane)
-                ((ScrollPane) settingsOuterAnchor.getChildren().get(0)).getContent();
+        AnchorPane settingsOuterAnchor =
+                (AnchorPane) mainTabPanel.getTabs().get(2).getContent();
+        AnchorPane settingsInnerAnchor =
+                (AnchorPane) ((ScrollPane) settingsOuterAnchor.getChildren().get(0)).getContent();
         ObservableList<Node> list = settingsInnerAnchor.getChildren();
         for (Node temp : list) {
             if (!"TextField".equals(temp.getTypeSelector())) {
@@ -1001,9 +1059,10 @@ public class GuiController {
     }
 
     private void wipeTable() {
-        AnchorPane settingsOuterAnchor = (AnchorPane) mainTabPanel.getTabs().get(2).getContent();
-        AnchorPane settingsInnerAnchor = (AnchorPane)
-                ((ScrollPane) settingsOuterAnchor.getChildren().get(0)).getContent();
+        AnchorPane settingsOuterAnchor =
+                (AnchorPane) mainTabPanel.getTabs().get(2).getContent();
+        AnchorPane settingsInnerAnchor =
+                (AnchorPane) ((ScrollPane) settingsOuterAnchor.getChildren().get(0)).getContent();
         ObservableList<Node> list = settingsInnerAnchor.getChildren();
         for (Node temp : list) {
             if (!"TextField".equals(temp.getTypeSelector())) {
@@ -1015,7 +1074,7 @@ public class GuiController {
                         "ruleMacSetable",
                         "ruleServerSetable",
                         "ruleClientIdSetable" ->
-                        ((TextField) temp).textProperty().setValue("");
+                    ((TextField) temp).textProperty().setValue("");
             }
         }
         editingTable = false;
@@ -1024,7 +1083,8 @@ public class GuiController {
     /**
      * Draw the service status in the drop down.
      */
-    @FXML protected void showServicesStatus() {
+    @FXML
+    protected void showServicesStatus() {
         ObservableList<Node> list = topTabControlPanel.getChildren();
         for (Node temp : list) {
             if ("MenuButton".equals(temp.getTypeSelector())) {
@@ -1056,7 +1116,7 @@ public class GuiController {
      * If the system supports tray icons, draw a tray icon and init that mode.
      */
     private void initTray() {
-        //Toolkit.getDefaultToolkit().getImage(imageUrl)
+        // Toolkit.getDefaultToolkit().getImage(imageUrl)
         try {
             URL iconUrl = getClass().getResource("/icon.gif");
             if (iconUrl == null) {
@@ -1067,7 +1127,7 @@ public class GuiController {
             if (icon != null) {
                 trayIcon = new TrayIcon(icon, "ONB - Classic");
             } else {
-                //no tray icon
+                // no tray icon
                 return;
             }
         } catch (IOException e) {
@@ -1085,7 +1145,7 @@ public class GuiController {
         java.awt.MenuItem exitItem = new java.awt.MenuItem("Exit");
         exitItem.addActionListener(_e -> System.exit(0));
 
-        //Add components to pop-up menu
+        // Add components to pop-up menu
         final PopupMenu popup = new PopupMenu();
         popup.add(openItem);
         popup.addSeparator();
@@ -1124,8 +1184,8 @@ public class GuiController {
      */
     private void goingToTrayMessage() {
         if (SystemTray.isSupported() && trayIcon != null) {
-            trayIcon.displayMessage("Closed to tray", "ONB will continue to run in the tray.",
-                    TrayIcon.MessageType.INFO);
+            trayIcon.displayMessage(
+                    "Closed to tray", "ONB will continue to run in the tray.", TrayIcon.MessageType.INFO);
         }
     }
 
@@ -1233,13 +1293,15 @@ public class GuiController {
         public void commitEdit(Boolean value) {
             super.commitEdit(value);
             checkBox.setDisable(true);
-            AnchorPane settingsOuterAnchor = (AnchorPane) mainTabPanel.getTabs().get(2).getContent();
-            AnchorPane settingsInnerAnchor = (AnchorPane)
-                    ((ScrollPane) settingsOuterAnchor.getChildren().get(0)).getContent();
+            AnchorPane settingsOuterAnchor =
+                    (AnchorPane) mainTabPanel.getTabs().get(2).getContent();
+            AnchorPane settingsInnerAnchor =
+                    (AnchorPane) ((ScrollPane) settingsOuterAnchor.getChildren().get(0)).getContent();
             ObservableList<Node> list = settingsInnerAnchor.getChildren();
             for (Node temp : list) {
                 if (temp.getId() != null
-                        && temp.getTypeSelector().equals("TableView") && "interfaceTable".equals(temp.getId())) {
+                        && temp.getTypeSelector().equals("TableView")
+                        && "interfaceTable".equals(temp.getId())) {
                     updateManager((TableView<InterfaceDevice>) temp);
                     break;
                 }
@@ -1269,7 +1331,8 @@ public class GuiController {
             for (InterfaceDevice singleDevice : rows) {
                 if (singleDevice.enabled.getValue()) {
                     int lastPos = singleDevice.getDeviceName().lastIndexOf('(');
-                    newInterfaces.add(singleDevice.getDeviceName()
+                    newInterfaces.add(singleDevice
+                            .getDeviceName()
                             .substring(lastPos + 1, singleDevice.getDeviceName().length() - 1));
                 }
             }
@@ -1359,9 +1422,10 @@ public class GuiController {
      */
     @SuppressWarnings("for-rollout:NullAway")
     private Node getSettingsItem(String id) {
-        AnchorPane settingsOuterAnchor = (AnchorPane) mainTabPanel.getTabs().get(2).getContent();
-        AnchorPane settingsInnerAnchor = (AnchorPane)
-                ((ScrollPane) settingsOuterAnchor.getChildren().get(0)).getContent();
+        AnchorPane settingsOuterAnchor =
+                (AnchorPane) mainTabPanel.getTabs().get(2).getContent();
+        AnchorPane settingsInnerAnchor =
+                (AnchorPane) ((ScrollPane) settingsOuterAnchor.getChildren().get(0)).getContent();
         ObservableList<Node> list = settingsInnerAnchor.getChildren();
         for (Node temp : list) {
             if (temp.getId() == null) {

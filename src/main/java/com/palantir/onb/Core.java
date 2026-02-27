@@ -35,8 +35,7 @@ public final class Core {
 
     public static final String ONB_VERSION = loadVersion();
 
-    private Core() {
-    }
+    private Core() {}
 
     public static Manager getManager() {
         return manager;
@@ -105,7 +104,7 @@ public final class Core {
         }
     }
 
-    //CHECKSTYLE.OFF: CyclomaticComplexity
+    // CHECKSTYLE.OFF: CyclomaticComplexity
     /**
      * Process the parameters the user has entered.
      * @param newLogger Logger to log errors
@@ -126,7 +125,7 @@ public final class Core {
                 case "-i" -> {
                     if (argIterator.hasNext()) {
                         if ("any".equalsIgnoreCase(argIterator.next())) {
-                            //this is so we know its set
+                            // this is so we know its set
                             manager.overrideInterfaces(new String[0]);
                         } else {
                             String temp = argIterator.next();
@@ -220,7 +219,7 @@ public final class Core {
         }
         return returnStatus;
     }
-    //CHECKSTYLE:ON
+    // CHECKSTYLE:ON
 
     /**
      * Echo out the help information to the console.
@@ -248,7 +247,7 @@ public final class Core {
                 + "\t-lc [level]\t- starts console logger on specified level\n"
                 + "\t-lf [level]\t- starts file logger on specified level\n" + "\t\n" + "\t\n"
                 + "Examples\n" + "\tonb.jar -i vmnet1,en0";
-        //CHECKSTYLE.OFF: RegexpSinglelineJava
+        // CHECKSTYLE.OFF: RegexpSinglelineJava
         System.out.println(output);
     }
 

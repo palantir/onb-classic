@@ -47,9 +47,9 @@ class TftpOptionAck {
         while (it.hasNext()) {
             Map.Entry<String, byte[]> item = it.next();
             packetLength += item.getKey().getBytes().length;
-            packetLength += 1;  //This is for the 0 in between
+            packetLength += 1; // This is for the 0 in between
             packetLength += item.getValue().length;
-            packetLength += 1;  //This is for the 0 trailing
+            packetLength += 1; // This is for the 0 trailing
         }
         final ByteBuffer buffer = ByteBuffer.allocate(packetLength);
 

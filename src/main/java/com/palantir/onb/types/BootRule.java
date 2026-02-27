@@ -23,17 +23,17 @@ package com.palantir.onb.types;
 public class BootRule {
     // Client ID, when the PxeService systems starts it will give us a generic PXEClient or iPXE, or maybe
     // newer
-    private String client; //Filter
+    private String client; // Filter
     // This is this server responding
-    private String serverIp; //Output from filter
+    private String serverIp; // Output from filter
     // TftpService address to get boot file
-    private String tftpIp; //Output from filter
+    private String tftpIp; // Output from filter
     // Which file to load
-    private String bootFile; //Output from filter
+    private String bootFile; // Output from filter
     // If we are filtering by hardware address, the address goes here
-    private String hardwareAddress; //Filer
+    private String hardwareAddress; // Filer
     // hardware type to boot referenced in https://tools.ietf.org/html/rfc4578
-    private int[] hardwareTypes; //filter
+    private int[] hardwareTypes; // filter
 
     public BootRule() {
         client = "";
@@ -49,8 +49,12 @@ public class BootRule {
      * @return if the rule is empty or not
      */
     public boolean emptyRule() {
-        return client.isEmpty() && serverIp.isEmpty() && tftpIp.isEmpty()
-                && bootFile.isEmpty() && hardwareAddress.isEmpty() && hardwareTypes.length == 0;
+        return client.isEmpty()
+                && serverIp.isEmpty()
+                && tftpIp.isEmpty()
+                && bootFile.isEmpty()
+                && hardwareAddress.isEmpty()
+                && hardwareTypes.length == 0;
     }
 
     /**

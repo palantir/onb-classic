@@ -29,27 +29,26 @@ import java.util.List;
  */
 public final class InterfaceData {
 
-    private InterfaceData() {
-    }
+    private InterfaceData() {}
 
     /**
      * Output list of interfaces to the console.
      */
     static void printInterfaces() {
         try {
-            final Enumeration<NetworkInterface> interfaces =
-                    NetworkInterface.getNetworkInterfaces();
+            final Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
             while (interfaces.hasMoreElements()) {
                 final NetworkInterface networkInterface = interfaces.nextElement();
-                Manager.getManagerLogger().simpleReport(
-                        "Interface \"" + networkInterface.getDisplayName() + "\" - "
-                                + networkInterface.getName() + " - Online:"
-                                + networkInterface.isUp(), false);
-                final List<InterfaceAddress> listingAddress =
-                        networkInterface.getInterfaceAddresses();
+                Manager.getManagerLogger()
+                        .simpleReport(
+                                "Interface \"" + networkInterface.getDisplayName() + "\" - "
+                                        + networkInterface.getName() + " - Online:"
+                                        + networkInterface.isUp(),
+                                false);
+                final List<InterfaceAddress> listingAddress = networkInterface.getInterfaceAddresses();
                 for (final InterfaceAddress singleAddress : listingAddress) {
-                    Manager.getManagerLogger().simpleReport("\t" + singleAddress.getAddress().getHostAddress(),
-                            false);
+                    Manager.getManagerLogger()
+                            .simpleReport("\t" + singleAddress.getAddress().getHostAddress(), false);
                 }
             }
         } catch (final SocketException e) {
@@ -64,8 +63,8 @@ public final class InterfaceData {
      */
     public static boolean verifyNics(String intString) {
         if (intString.contains("-")) {
-            Manager.getManagerLogger().simpleReport("It appears a option was given instead of "
-                    + "a list of interfaces?", true);
+            Manager.getManagerLogger()
+                    .simpleReport("It appears a option was given instead of " + "a list of interfaces?", true);
             return false;
         }
         final List<String> singleInterfaces = new ArrayList<>(Arrays.asList(intString.split(",")));
@@ -74,8 +73,7 @@ public final class InterfaceData {
             return false;
         }
         try {
-            final Enumeration<NetworkInterface> interfaces =
-                    NetworkInterface.getNetworkInterfaces();
+            final Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
             while (interfaces.hasMoreElements()) {
                 final NetworkInterface networkInterface = interfaces.nextElement();
                 singleInterfaces.remove(networkInterface.getName());
@@ -102,8 +100,7 @@ public final class InterfaceData {
     public static String[] getInterfaces() {
         List<String> ints = new ArrayList<>();
         try {
-            final Enumeration<NetworkInterface> interfaces =
-                    NetworkInterface.getNetworkInterfaces();
+            final Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
             while (interfaces.hasMoreElements()) {
                 final NetworkInterface networkInterface = interfaces.nextElement();
                 ints.add(networkInterface.getName());
