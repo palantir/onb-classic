@@ -198,7 +198,10 @@ public final class Manager {
         }
 
         if (overrides.getTftpSettingSet().getRootFs() != null
-                && overrides.getTftpSettingSet().getRootFs().equals(fileLoaded.getTftpSettingSet().getRootFs())) {
+                && overrides
+                        .getTftpSettingSet()
+                        .getRootFs()
+                        .equals(fileLoaded.getTftpSettingSet().getRootFs())) {
             fileLoaded.setTftpSettingSet(overrides.getTftpSettingSet());
         }
     }
@@ -253,7 +256,8 @@ public final class Manager {
     public void startHttpWithLogger(LogStandard passedLogger) {
         if (fileLoaded.getTftpSettingSet().getRootFs() != null) {
             httpProcess = new ApacheHttp(
-                    fileLoaded.getTftpSettingSet().getRootFs(), fileLoaded.getHttpPort(),
+                    fileLoaded.getTftpSettingSet().getRootFs(),
+                    fileLoaded.getHttpPort(),
                     fileLoaded.isAllowIsoExtracting());
             httpProcess.setLocalLogger(passedLogger);
             httpProcess.setLogger(0);
@@ -399,6 +403,7 @@ public final class Manager {
             return startHttp("Http - ");
         }
     }
+
     private boolean startHttp(String name) {
         httpProcess.setStartPort(fileLoaded.getHttpPort());
         httpProcess.setFolderLoc(fileLoaded.getTftpSettingSet().getRootFs());

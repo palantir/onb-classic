@@ -48,7 +48,9 @@ import java.util.zip.ZipFile;
  */
 @SuppressWarnings("StrictUnusedVariable")
 public class Home extends HttpServlet {
-    @Serial private static final long serialVersionUID = -1L;
+    @Serial
+    private static final long serialVersionUID = -1L;
+
     private String fileLoc = "";
 
     @SuppressWarnings("for-rollout:NullAway")
@@ -64,7 +66,7 @@ public class Home extends HttpServlet {
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        //We are using only loggerC with the http endpoint work around
+        // We are using only loggerC with the http endpoint work around
         localLogger = new GuiLog(Integer.parseInt(getInitParameter("loggerC")));
         localLogger.setDates(false);
         fileLoc = getInitParameter("folder");
@@ -78,8 +80,7 @@ public class Home extends HttpServlet {
      * @throws IOException errors thrown writing response
      */
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         ServletOutputStream out = resp.getOutputStream();
         String request;
         if (req.getRequestURI() == null || req.getRequestURI().equals("/")) {
@@ -105,21 +106,26 @@ public class Home extends HttpServlet {
             return;
         }
 
-        localLogger.report("", "", "", " - Read Request - For "
-                + request, "/" + req.getRemoteAddr() + " - HTTP - " + "Read Request " + request, false);
+        localLogger.report(
+                "",
+                "",
+                "",
+                " - Read Request - For " + request,
+                "/" + req.getRemoteAddr() + " - HTTP - " + "Read Request " + request,
+                false);
         pullImageFile(req, resp);
     }
 
     private void pullImageFile(HttpServletRequest req, HttpServletResponse resp) {
         String fileToGet = req.getRequestURI();
-        //I have seen several times redhat installer ask for something with multiple slashes
+        // I have seen several times redhat installer ask for something with multiple slashes
         fileToGet = checkForJump(fileToGet).replace("//", "/");
         fileToGet = URLDecoder.decode(fileToGet, StandardCharsets.UTF_8);
         String compressionPath = req.getQueryString();
         if (compressionPath != null) {
             compressionPath = compressionPath.replace("//", "/");
-            //If a file has a + in it, this breaks getting the file
-            //compressionPath = URLDecoder.decode(compressionPath, StandardCharsets.UTF_8);
+            // If a file has a + in it, this breaks getting the file
+            // compressionPath = URLDecoder.decode(compressionPath, StandardCharsets.UTF_8);
         } else {
             Pattern pattern = Pattern.compile(".*\\/(.*\\.(iso|zip))(.*)", Pattern.CASE_INSENSITIVE);
             Matcher matcher = pattern.matcher(fileToGet);
@@ -133,19 +139,24 @@ public class Home extends HttpServlet {
         if (allowImageProcessing && compressionPath != null && !compressionPath.isEmpty()) {
             getInternalImageFile(req, resp, internalFileToGet, compressionPath);
         } else {
-            //raw access mode
-            localLogger.report("", "", "", "",
-                    "/" + req.getRemoteAddr() + " - HTTP - " + "Pulling: " + fileToGet, false);
+            // raw access mode
+            localLogger.report(
+                    "", "", "", "", "/" + req.getRemoteAddr() + " - HTTP - " + "Pulling: " + fileToGet, false);
             File initialFile = new File(internalFileToGet);
             sendUncompressedData(initialFile, fileToGet, req, resp);
         }
     }
 
-    private void getInternalImageFile(HttpServletRequest req, HttpServletResponse resp, String fileToGet,
-                                      String passedCompressionPath) {
+    private void getInternalImageFile(
+            HttpServletRequest req, HttpServletResponse resp, String fileToGet, String passedCompressionPath) {
         String compressionPath = passedCompressionPath;
-        localLogger.report("", "", "", "",
-                "/" + req.getRemoteAddr() + " - HTTP - " + "Pulling: " + fileToGet + ":" + compressionPath, false);
+        localLogger.report(
+                "",
+                "",
+                "",
+                "",
+                "/" + req.getRemoteAddr() + " - HTTP - " + "Pulling: " + fileToGet + ":" + compressionPath,
+                false);
         File initialFile = new File(fileToGet);
         if (compressionPath.startsWith("/")) {
             compressionPath = compressionPath.substring(1);
@@ -165,19 +176,17 @@ public class Home extends HttpServlet {
                     return;
                 }
                 default ->
-                        localLogger.simpleReport("Compressed file that is not zip or iso tried to "
-                                + "direct load.", true);
+                    localLogger.simpleReport("Compressed file that is not zip or iso tried to " + "direct load.", true);
             }
         }
 
         localLogger.simpleReport("File should be on disk and couldn't be located", true);
         send404(resp);
-
     }
 
     private String checkForJump(String loc) {
         if (loc.contains("..")) {
-            //someone tried to go up a directory
+            // someone tried to go up a directory
             String editedLoc = loc.replaceAll("..", ".");
             localLogger.simpleReport("A url was given with a directory jump" + editedLoc, true);
             return editedLoc;
@@ -230,7 +239,7 @@ public class Home extends HttpServlet {
     }
 
     private void selectFileType(String requestedFile, HttpServletResponse resp) {
-        //Return correct file type, iPXE and some other systems get mad if this isnt correct
+        // Return correct file type, iPXE and some other systems get mad if this isnt correct
         int lastInd = requestedFile.lastIndexOf('.') + 1;
         resp.setContentType("text/plain");
         String sub = requestedFile.substring(lastInd);
@@ -244,8 +253,8 @@ public class Home extends HttpServlet {
         }
     }
 
-    private void sendUncompressedData(File file, String requestedFile, HttpServletRequest req,
-                                      HttpServletResponse resp) {
+    private void sendUncompressedData(
+            File file, String requestedFile, HttpServletRequest req, HttpServletResponse resp) {
         localLogger.simpleReport("Pulling: " + file.getAbsolutePath(), false);
         if (!file.exists()) {
             send404(resp);
@@ -257,7 +266,8 @@ public class Home extends HttpServlet {
             resp.setContentLengthLong(file.length());
             // Without the following line, if there is a ? in the url, the correct file name will not be sent, and
             // rhel install will fail even though the data is correct
-            resp.addHeader("Content-Disposition",
+            resp.addHeader(
+                    "Content-Disposition",
                     "attachment; filename=\"" + file.getName().toLowerCase(Locale.ROOT) + "\"");
             String range = req.getHeader("range");
             // Installs of rhel and cent will not work if they request a range and the server does not respond with that
@@ -279,8 +289,7 @@ public class Home extends HttpServlet {
         }
     }
 
-    private void sendZipData(File fileToGet, String compressionPath, HttpServletRequest req,
-                             HttpServletResponse resp) {
+    private void sendZipData(File fileToGet, String compressionPath, HttpServletRequest req, HttpServletResponse resp) {
         try (ZipFile zipFile = new ZipFile(fileToGet)) {
             Enumeration<? extends ZipEntry> entries = zipFile.entries();
             while (entries.hasMoreElements()) {
@@ -290,9 +299,10 @@ public class Home extends HttpServlet {
                     @SuppressWarnings("for-rollout:StringSplitter")
                     String[] processRealName =
                             entry.getName().toLowerCase(Locale.ROOT).split("/");
-                    //This could need range data sometime
-                    resp.addHeader("Content-Disposition", "attachment; filename=\""
-                            + processRealName[processRealName.length - 1] + "\"");
+                    // This could need range data sometime
+                    resp.addHeader(
+                            "Content-Disposition",
+                            "attachment; filename=\"" + processRealName[processRealName.length - 1] + "\"");
                     InputStream zipIn = zipFile.getInputStream(entry);
                     final ServletOutputStream out = resp.getOutputStream();
                     selectFileType(req.getRequestURI().toLowerCase(Locale.ROOT), resp);
@@ -318,7 +328,7 @@ public class Home extends HttpServlet {
             return;
         }
 
-        compressionPath = "/" + compressionPath; //Iso reading library expects paths to start with a /
+        compressionPath = "/" + compressionPath; // Iso reading library expects paths to start with a /
 
         try (IsoFileReader discFs = new IsoFileReader(getIsoImage)) {
             GenericInternalIsoFile[] files = discFs.getAllFiles();
@@ -331,8 +341,9 @@ public class Home extends HttpServlet {
             }
 
             // This means we found the file
-            resp.addHeader("Content-Disposition",
-                            "attachment; filename=\"" + generalFile.get().getFileName() + "\"");
+            resp.addHeader(
+                    "Content-Disposition",
+                    "attachment; filename=\"" + generalFile.get().getFileName() + "\"");
             final InputStream isoInputStream = discFs.getFileStream(generalFile.get());
             final ServletOutputStream out = resp.getOutputStream();
             selectFileType(generalFile.get().getFileName(), resp);
@@ -372,8 +383,9 @@ public class Home extends HttpServlet {
                     }
                 }
             } else {
-                //Feed the whole file
-                resp.setHeader("Content-Length", String.valueOf(generalFile.get().getSize()));
+                // Feed the whole file
+                resp.setHeader(
+                        "Content-Length", String.valueOf(generalFile.get().getSize()));
                 isoInputStream.transferTo(out);
             }
             out.flush();

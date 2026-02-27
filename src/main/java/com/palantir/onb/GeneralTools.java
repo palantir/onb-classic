@@ -22,8 +22,7 @@ import java.io.File;
  * Functions that are used multiple times.
  */
 public final class GeneralTools {
-    private GeneralTools() {
-    }
+    private GeneralTools() {}
 
     /**
      * Convert from the relative filenames that the packet has in them, to a real system path.

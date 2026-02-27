@@ -54,7 +54,6 @@ class BootRulesParserTest {
         assertEquals(BootRulesParser.getLastSupported(), "2.0.0");
     }
 
-
     private File saveRulesToFile(TemporaryFolder temporaryFolder) {
         File createdFile = null;
         try {

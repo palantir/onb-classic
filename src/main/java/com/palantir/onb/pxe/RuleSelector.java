@@ -30,8 +30,7 @@ import java.util.Optional;
  * Rule processor, get the list of rules and find which this packet requires.
  */
 final class RuleSelector {
-    private RuleSelector() {
-    }
+    private RuleSelector() {}
 
     /**
      * Feed in all the details about the host, the packet of what wants to boot, and the rules.
@@ -44,17 +43,19 @@ final class RuleSelector {
      * @return Options to use
      */
     @SuppressWarnings("DefaultCharset")
-    public static PxeOptions ruleMaker(String hostname,
-                                       ProcessedPacket inputPacket,
-                                       BootRules bootRules,
-                                       InetAddress currentServingAddress,
-                                       LogStandard localLogger) {
+    public static PxeOptions ruleMaker(
+            String hostname,
+            ProcessedPacket inputPacket,
+            BootRules bootRules,
+            InetAddress currentServingAddress,
+            LogStandard localLogger) {
         final PxeOptions returningOptions = new PxeOptions();
         final Optional<DhcpOption> clientIdOption = inputPacket.getOption((byte) 77);
 
         String clientId;
-        clientId = clientIdOption.map(dhcpOption ->
-                new String(dhcpOption.getPayload(), StandardCharsets.UTF_8)).orElse("");
+        clientId = clientIdOption
+                .map(dhcpOption -> new String(dhcpOption.getPayload(), StandardCharsets.UTF_8))
+                .orElse("");
 
         for (int i = 0; i < bootRules.getRuleSet().size(); i++) {
             // We want to know if the mac was required to match, and if so then load IF the client
@@ -62,14 +63,19 @@ final class RuleSelector {
             // The so blank is a positive mac match
             boolean macMatched;
             if (!bootRules.getRuleSet().get(i).getHardwareAddress().isEmpty()) {
-                final String stripColin =
-                        bootRules.getRuleSet().get(i).getHardwareAddress().toUpperCase(Locale.ROOT).replace(":", "");
+                final String stripColin = bootRules
+                        .getRuleSet()
+                        .get(i)
+                        .getHardwareAddress()
+                        .toUpperCase(Locale.ROOT)
+                        .replace(":", "");
                 macMatched = inputPacket.compareMacs(stripColin.getBytes());
             } else {
                 macMatched = true;
             }
 
-            boolean clientMatched = clientId.contains(bootRules.getRuleSet().get(i).getClient());
+            boolean clientMatched =
+                    clientId.contains(bootRules.getRuleSet().get(i).getClient());
 
             // We have been getting some packets where they don't include option 93 but are requesting boot info.
             // Defaulting to not matching arch in that case.

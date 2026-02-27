@@ -85,23 +85,22 @@ public class InteractionRunner implements Runnable {
             return;
         }
         /*
-            RFC
-            TFTP supports five types of packets, all of which have been mentioned
-            above:
-                  opcode  operation
-                    1     Read request (RRQ)   - Implemented below
-                    2     Write request (WRQ)  - Not currently supported
-                    3     Data (DATA)          - Handled later
-                    4     Acknowledgment (ACK) - This is handled below in
-                    5     Error (ERROR)        - Handled later
-         */
+           RFC
+           TFTP supports five types of packets, all of which have been mentioned
+           above:
+                 opcode  operation
+                   1     Read request (RRQ)   - Implemented below
+                   2     Write request (WRQ)  - Not currently supported
+                   3     Data (DATA)          - Handled later
+                   4     Acknowledgment (ACK) - This is handled below in
+                   5     Error (ERROR)        - Handled later
+        */
         if (workingPacket instanceof TftpReadRequestPacket) {
             localLogger.report(
                     "",
                     "",
                     "",
-                    " - Read Request - For "
-                            + ((TftpReadRequestPacket) workingPacket).getFilename(),
+                    " - Read Request - For " + ((TftpReadRequestPacket) workingPacket).getFilename(),
                     workingPacket.getAddress().toString() + " - TftpService - " + "Read Request "
                             + ((TftpReadRequestPacket) workingPacket).getFilename(),
                     false);
@@ -125,12 +124,11 @@ public class InteractionRunner implements Runnable {
     private void openConnectionBack() {
         try {
             threadSocket = new DatagramSocket();
-            //Hopefully this doesn't cause issues, but we don't want it waiting forever
+            // Hopefully this doesn't cause issues, but we don't want it waiting forever
             threadSocket.setSoTimeout(5000);
         } catch (final SocketException e) {
             localLogger.simpleReport(
-                    "TftpService - ERROR TFTP002: Failed to open a returning socket for TftpService",
-                    true);
+                    "TftpService - ERROR TFTP002: Failed to open a returning socket for TftpService", true);
             localLogger.simpleReport(e.toString(), true);
         }
     }
@@ -155,8 +153,7 @@ public class InteractionRunner implements Runnable {
             threadSocket.send(sendingPacket.newDatagram());
         } catch (final IOException e) {
             localLogger.simpleReport(
-                    "TftpService - ERROR TFTP003: Attempted to send a return TftpService packet and failed",
-                    true);
+                    "TftpService - ERROR TFTP003: Attempted to send a return TftpService packet and failed", true);
             localLogger.simpleReport(e.toString(), true);
             return false;
         }
@@ -197,7 +194,7 @@ public class InteractionRunner implements Runnable {
         } catch (final IOException e) {
             localLogger.simpleReport(
                     "TftpService - ERROR TFTP005: Attempted to send a return TftpService packet "
-                    + "in a single transaction and failed",
+                            + "in a single transaction and failed",
                     true);
             localLogger.simpleReport(e.toString(), true);
         }
@@ -216,7 +213,7 @@ public class InteractionRunner implements Runnable {
             try {
                 tempData = TftpPacket.newTftpPacket(manualMode);
             } catch (final TftpPacketException e) {
-                //We never got a response for the last packet, lets retry
+                // We never got a response for the last packet, lets retry
                 if (retryAttempt > 0) {
                     closeConnectionBack();
                     return null;
@@ -243,7 +240,7 @@ public class InteractionRunner implements Runnable {
         } catch (final IOException e) {
             localLogger.simpleReport(
                     "TftpService - ERROR TFTP005: Attempted to receive a return TftpService packet"
-                    + " in a single transaction and failed",
+                            + " in a single transaction and failed",
                     true);
             localLogger.simpleReport(e.toString(), true);
         }
@@ -275,24 +272,23 @@ public class InteractionRunner implements Runnable {
         try (FileInputStream readBits = new FileInputStream(requested)) {
             long skippedBytes = readBits.skip(offset);
             if (skippedBytes != offset) {
-                localLogger.simpleReport("TftpService - ERROR TFTP0##: "
-                        + "Could not seek to proper file location", true);
+                localLogger.simpleReport(
+                        "TftpService - ERROR TFTP0##: " + "Could not seek to proper file location", true);
             }
             skippedBytes = readBits.read(myBuffer, 0, buffSize);
             if (skippedBytes != buffSize) {
-                localLogger.simpleReport("TftpService - ERROR TFTP0##: "
-                        + "Could not read all of data wanted in file", true);
+                localLogger.simpleReport(
+                        "TftpService - ERROR TFTP0##: " + "Could not read all of data wanted in file", true);
             }
         } catch (final IOException e) {
             localLogger.simpleReport(
-                    "TftpService - ERROR TFTP006: Attempted to read file to send over TftpService and failed",
-                    true);
+                    "TftpService - ERROR TFTP006: Attempted to read file to send over TftpService and failed", true);
             localLogger.simpleReport(e.toString(), true);
         }
         return myBuffer;
     }
 
-    //CHECKSTYLE.OFF: CyclomaticComplexity
+    // CHECKSTYLE.OFF: CyclomaticComplexity
     /**
      * This function manages the entire process for handling a read request.
      */
@@ -307,41 +303,41 @@ public class InteractionRunner implements Runnable {
         int lastPort = rawPacketToRespondTo.getPort();
 
         if (workingPacket.getReadMode() == 0) {
-            //This is currently not supported
+            // This is currently not supported
             errorOnNetAsciiReadAttempt(lastPort);
         }
         if (workingPacket.hasOptions()) {
             lastPort = returnOptionsIfNegotiating(workingPacket, requestedFile, lastPort);
             if (lastPort == -1) {
-                //Error occurred in negotiating
+                // Error occurred in negotiating
                 closeConnectionBack();
                 return;
             }
         }
 
-        //Option neg is over, now data sending
+        // Option neg is over, now data sending
         long filePosition = 0;
         long fileTotalLength = requestedFile.length();
-        boolean needToSendFinalEmptyData = requestedFile.length() != 0
-                && (maxTransmitPacketSize % requestedFile.length() == 0);
-        //If the file ends on a packet boundary, then we need to send one last data packet with 0 data to trigger the
-        //final end ack, if needsToSendFinalEmptyData is true, this needs one more empty packet to set to false and end
-        //transaction.
+        boolean needToSendFinalEmptyData =
+                requestedFile.length() != 0 && (maxTransmitPacketSize % requestedFile.length() == 0);
+        // If the file ends on a packet boundary, then we need to send one last data packet with 0 data to trigger the
+        // final end ack, if needsToSendFinalEmptyData is true, this needs one more empty packet to set to false and end
+        // transaction.
         while (filePosition < fileTotalLength || (filePosition == fileTotalLength && needToSendFinalEmptyData)) {
-            //Get data from file to send to client
+            // Get data from file to send to client
             byte[] myBuffer = getDataChunk(requestedFile, filePosition);
-            //Turn that data into a packet
+            // Turn that data into a packet
             FixedTftpDataPacket returningNewData = new FixedTftpDataPacket(
                     workingPacket.getDatagramPacket().getAddress(),
                     lastPort,
                     getNextBlockNumber(filePosition),
                     myBuffer);
-            //Send!
+            // Send!
             if (!trySend(returningNewData.getDatagram())) {
                 localLogger.simpleReport("Error sending packet", true);
             }
 
-            //Now handle the response
+            // Now handle the response
             TftpPacket tempData = getOneTftpPacket();
             if (tempData == null) {
                 return;
@@ -351,12 +347,12 @@ public class InteractionRunner implements Runnable {
                     // Type 3 is data, we are sending so that is not applicable here
                     // Ack packet
                     if (filePosition == fileTotalLength) {
-                        //this is the response to the last empty data packet
+                        // this is the response to the last empty data packet
                         needToSendFinalEmptyData = false;
                     }
                     if (!properPacketIsBeingAcked(tempData, filePosition)) {
                         localLogger.simpleReport("Error responding", true);
-                        continue;   //This is for out of order file chunk response
+                        continue; // This is for out of order file chunk response
                     }
                     filePosition += myBuffer.length;
                 }
@@ -384,10 +380,8 @@ public class InteractionRunner implements Runnable {
 
     @SuppressWarnings("for-rollout:NullAway")
     private File getRequestedFileOrReturnNull(FixedTftpReadPacket fullPacket) {
-        File crapFileGetter = GeneralTools.getRealFileName(
-                    fullPacket.getFileName(),
-                    localLogger,
-                    internalSettings.getRootFs());
+        File crapFileGetter =
+                GeneralTools.getRealFileName(fullPacket.getFileName(), localLogger, internalSettings.getRootFs());
 
         if (!crapFileGetter.exists()) {
             // Cant use buffered sender, that removed the null terminator and creates a error
@@ -431,12 +425,11 @@ public class InteractionRunner implements Runnable {
     }
 
     private void errorOnNetAsciiReadAttempt(int lastPort) {
-        trySend(
-                new TftpErrorPacket(
-                        rawPacketToRespondTo.getAddress(),
-                        lastPort,
-                        0,
-                        "Server does not support Netascii, switch to octet mode"));
+        trySend(new TftpErrorPacket(
+                rawPacketToRespondTo.getAddress(),
+                lastPort,
+                0,
+                "Server does not support Netascii, switch to octet mode"));
         localLogger.simpleReport("Client requested netascii which is not supported", true);
         closeConnectionBack();
     }
@@ -462,20 +455,16 @@ public class InteractionRunner implements Runnable {
                 case "tsize" ->
                     // http://tools.ietf.org/html/rfc2349
                     // Return Op code 6, tsize of file in bytes
-                        ackPacket.addOption("tsize", String.valueOf(requestedFile.length()).getBytes());
+                    ackPacket.addOption(
+                            "tsize", String.valueOf(requestedFile.length()).getBytes());
                 default -> {
                     localLogger.simpleReport(
                             "TftpService - ERROR TFTP008: Error in negotiating TftpService terms, [" + myItem.getKey()
                                     + "] options, closing session",
                             true);
-                    if (!trySend(
-                            new TftpErrorPacket(
-                                    rawPacketToRespondTo.getAddress(),
-                                    lastPort,
-                                    0,
-                                    "Option Not Defined"))) {
-                        localLogger.simpleReport("Could not send packet, "
-                                + "saying options cant be used", true);
+                    if (!trySend(new TftpErrorPacket(
+                            rawPacketToRespondTo.getAddress(), lastPort, 0, "Option Not Defined"))) {
+                        localLogger.simpleReport("Could not send packet, " + "saying options cant be used", true);
                     }
                     return -1;
                 }
@@ -506,9 +495,7 @@ public class InteractionRunner implements Runnable {
                     }
                 }
                 if (!canProcessPacketType) {
-                    localLogger.simpleReport(
-                            "TftpService - ERROR TFTP020: Unknown packet type",
-                            true);
+                    localLogger.simpleReport("TftpService - ERROR TFTP020: Unknown packet type", true);
                     return -1;
                 }
             } catch (final TftpPacketException e) {
@@ -526,7 +513,7 @@ public class InteractionRunner implements Runnable {
     private int getNextBlockNumber(long filePosition) {
         float rawPacketNumber = (float) filePosition / maxTransmitPacketSize;
         rawPacketNumber++;
-        //Max we can have is 65535 so we need to remove that number of it
+        // Max we can have is 65535 so we need to remove that number of it
         double newPacket = Math.floor(rawPacketNumber / 65535);
         double result = rawPacketNumber - newPacket;
         return (int) result;

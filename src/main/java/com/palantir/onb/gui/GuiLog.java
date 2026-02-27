@@ -75,16 +75,14 @@ public class GuiLog implements LogStandard {
      * @param _logLevel Unused log level
      */
     @Override
-    public void setLogFile(int _logLevel) {
-    }
+    public void setLogFile(int _logLevel) {}
 
     /**
      * Implementation forces us to have this.
      * @param _logLevelLoc log location
      */
     @Override
-    public void setLogFileLocation(String _logLevelLoc) {
-    }
+    public void setLogFileLocation(String _logLevelLoc) {}
 
     /**
      * GUI should never ask for this but we need to have it.
@@ -149,12 +147,8 @@ public class GuiLog implements LogStandard {
      * @param reportingError Is this an error being reported
      */
     @Override
-    public void report(String level0,
-                       String level1,
-                       String level2,
-                       String level3,
-                       String level4,
-                       boolean reportingError) {
+    public void report(
+            String level0, String level1, String level2, String level3, String level4, boolean reportingError) {
         if (childLogger != null) {
             childLogger.report(level0, level1, level2, level3, level4, reportingError);
         }

@@ -35,10 +35,7 @@ class FixedTftpDataPacket {
      * @param tftpBlockNumber ID of tftp block
      * @param data raw data
      */
-    FixedTftpDataPacket(InetAddress sentToAddress,
-                               int sendPort,
-                               int tftpBlockNumber,
-                               byte[] data) {
+    FixedTftpDataPacket(InetAddress sentToAddress, int sendPort, int tftpBlockNumber, byte[] data) {
         final ByteBuffer buffer = ByteBuffer.allocate(4 + data.length);
         buffer.order(ByteOrder.BIG_ENDIAN);
         buffer.put(ByteBuffer.allocate(2).putShort((byte) 0x03).array());

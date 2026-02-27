@@ -36,7 +36,7 @@ import java.util.Locale;
  * about packet and response 4 - Most verbose level of output 5 - Pcap File, currently disabled.
  */
 public class Logging implements LogStandard {
-    //CHECKSTYLE.OFF: RegexpSinglelineJava
+    // CHECKSTYLE.OFF: RegexpSinglelineJava
     private int consoleLogLevel;
     private int fileLogLevel;
     private String fileLogSaveLoc = "log.txt";
@@ -159,7 +159,7 @@ public class Logging implements LogStandard {
         }
     }
 
-    //CHECKSTYLE.OFF: CyclomaticComplexity
+    // CHECKSTYLE.OFF: CyclomaticComplexity
     /**
      * Report for each level.
      * @param level0 console lowest log, file disabled
@@ -171,12 +171,8 @@ public class Logging implements LogStandard {
      */
     @Override
     @SuppressWarnings("JavaTimeDefaultTimeZone")
-    public void report(String level0,
-                       String level1,
-                       String level2,
-                       String level3,
-                       String level4,
-                       boolean reportingError) {
+    public void report(
+            String level0, String level1, String level2, String level3, String level4, boolean reportingError) {
         String prefix = "";
         if (setDates) {
             final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss - ", Locale.ROOT);
@@ -277,7 +273,7 @@ public class Logging implements LogStandard {
             System.err.println("Error writing log file");
         }
     }
-    //CHECKSTYLE.ON
+    // CHECKSTYLE.ON
 
     /**
      * Write this log line to the log file.
@@ -286,9 +282,11 @@ public class Logging implements LogStandard {
      */
     @SuppressWarnings("JavaTimeDefaultTimeZone")
     private boolean writeLog(String passedText) {
-        try (PrintWriter out =
-                new PrintWriter(Files.newBufferedWriter(Paths.get(fileLogSaveLoc), StandardCharsets.UTF_8,
-                        StandardOpenOption.CREATE, StandardOpenOption.APPEND))) {
+        try (PrintWriter out = new PrintWriter(Files.newBufferedWriter(
+                Paths.get(fileLogSaveLoc),
+                StandardCharsets.UTF_8,
+                StandardOpenOption.CREATE,
+                StandardOpenOption.APPEND))) {
             final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss - ", Locale.ROOT);
             final LocalDateTime date = LocalDateTime.now(ZoneId.systemDefault());
             out.println(formatter.format(date) + "\t" + passedText);

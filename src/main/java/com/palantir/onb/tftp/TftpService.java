@@ -47,9 +47,7 @@ public class TftpService implements Runnable {
     @Override
     public void run() {
         boolean closeApp = false;
-        localLogger.simpleReport(
-                "TftpService - Listener Starting on Port 69. Responding on all interfaces.",
-                false);
+        localLogger.simpleReport("TftpService - Listener Starting on Port 69. Responding on all interfaces.", false);
         try (DatagramSocket udpSocket = new DatagramSocket(69)) {
             // TODO(#4): Limit interfaces on this service
             udpSocket.setSoTimeout(1000);
@@ -58,17 +56,15 @@ public class TftpService implements Runnable {
                 final DatagramPacket rawPacket = new DatagramPacket(buf, buf.length);
                 try {
                     udpSocket.receive(rawPacket);
-                    rawPacket.setData(
-                            Arrays.copyOf(rawPacket.getData(), rawPacket.getLength()));
-                    final Runnable temp =
-                            new InteractionRunner(rawPacket, settingsFile, localLogger);
+                    rawPacket.setData(Arrays.copyOf(rawPacket.getData(), rawPacket.getLength()));
+                    final Runnable temp = new InteractionRunner(rawPacket, settingsFile, localLogger);
                     final Thread tempStarterThread = new Thread(temp);
                     tempStarterThread.setName("TftpService File Handler Thread");
                     tempStarterThread.start();
                 } catch (final SocketTimeoutException e) {
-                    //This happens all the time, I dont care
+                    // This happens all the time, I dont care
                 } catch (final IOException e) {
-                    //This happened because we failed to get a packet
+                    // This happened because we failed to get a packet
                     localLogger.simpleReport(e.toString(), true);
                 }
                 if (Thread.currentThread().isInterrupted()) {
@@ -80,8 +76,7 @@ public class TftpService implements Runnable {
             }
         } catch (final SocketException e1) {
             localLogger.simpleReport(
-                    "TftpService - ERROR TFTP017: Attempted to create core TftpService server, and failed",
-                    true);
+                    "TftpService - ERROR TFTP017: Attempted to create core TftpService server, and failed", true);
             localLogger.simpleReport(e1.toString(), true);
         }
         localLogger.simpleReport("Stopping Thread on 69", false);

@@ -29,8 +29,7 @@ import java.util.Arrays;
  */
 public final class PxeInteraction {
 
-    private PxeInteraction() {
-    }
+    private PxeInteraction() {}
 
     /**
      * Get a single option out of a packet.
@@ -60,7 +59,7 @@ public final class PxeInteraction {
         returningPacket.setBootRequest((byte) 0x2);
         returningPacket.setHardwareType((byte) 0x1);
         returningPacket.setHardwareLength((byte) 0x6);
-        returningPacket.setHopNum((byte)  0x0); // not needed but we will set for fun
+        returningPacket.setHopNum((byte) 0x0); // not needed but we will set for fun
         returningPacket.setTransactionId(singlePacket.getTransactionId());
         long processedTime = (System.currentTimeMillis() - singlePacket.getMetaTimeDelivered()) / 1000;
         processedTime += singlePacket.convertBytesToInt(singlePacket.getSecondsPassed());
@@ -152,8 +151,8 @@ public final class PxeInteraction {
         final DhcpOption bootfileOption = new DhcpOption();
         bootfileOption.setOption((byte) 67);
         bootfileOption.setLength((byte) bootOption.getBootFile().length());
-        bootfileOption.setPayload(
-                stringToByteCon(bootOption.getBootFile(), bootOption.getBootFile().length(), false));
+        bootfileOption.setPayload(stringToByteCon(
+                bootOption.getBootFile(), bootOption.getBootFile().length(), false));
         returningPacket.getActiveOptions().add(bootfileOption);
 
         returningPacket.setMetaStatus((byte) 0x12);
@@ -203,7 +202,7 @@ public final class PxeInteraction {
             return false;
         }
 
-        for (int i = 240; i < rawPacket.length - 1;) {
+        for (int i = 240; i < rawPacket.length - 1; ) {
             if (rawPacket[i] == -1) {
                 // Ending with end signal, then no more data
                 return endOfPacket(rawPacket, i + 1);
@@ -219,10 +218,8 @@ public final class PxeInteraction {
             } else {
                 if ((i + 2 + (nextOption.getLength() & 0xFF)) <= rawPacket.length) {
                     try {
-                        nextOption.setPayload(Arrays.copyOfRange(
-                                rawPacket,
-                                i + 2,
-                                i + 2 + (nextOption.getLength() & 0xFF)));
+                        nextOption.setPayload(
+                                Arrays.copyOfRange(rawPacket, i + 2, i + 2 + (nextOption.getLength() & 0xFF)));
                         tempPacket.getActiveOptions().add(nextOption);
                         i += 2 + (nextOption.getLength() & 0xFF);
                     } catch (final ArrayIndexOutOfBoundsException e) {
@@ -271,7 +268,7 @@ public final class PxeInteraction {
         // Here is the options magic packet, 63 82 53 63
         // I had several clients not give options after this, and that forced a crash
         if (rawPacket.length > 242) {
-            for (int i = 240; i < rawPacket.length - 1;) {
+            for (int i = 240; i < rawPacket.length - 1; ) {
                 if (rawPacket[i] == -1) {
                     // localLogger.simpleReport("Exited fine", true);
                     i++;
@@ -294,10 +291,8 @@ public final class PxeInteraction {
                 } else {
                     if ((i + 2 + (nextOption.getLength() & 0xFF)) <= rawPacket.length) {
                         try {
-                            nextOption.setPayload(Arrays.copyOfRange(
-                                    rawPacket,
-                                    i + 2,
-                                    i + 2 + (nextOption.getLength() & 0xFF)));
+                            nextOption.setPayload(
+                                    Arrays.copyOfRange(rawPacket, i + 2, i + 2 + (nextOption.getLength() & 0xFF)));
                             tempPacket.getActiveOptions().add(nextOption);
                             i += 2 + (nextOption.getLength() & 0xFF);
                         } catch (final ArrayIndexOutOfBoundsException e) {
@@ -337,7 +332,7 @@ public final class PxeInteraction {
             size += options.getLength() + 2; // one for type, one for length byte
         }
         size += 1; // we will call this the realtek fix
-        size += 20; //add 20 bytes of padding at the end
+        size += 20; // add 20 bytes of padding at the end
         final byte[] finalPayload = new byte[size];
         finalPayload[0] = workingPacket.getBootRequest();
         finalPayload[1] = workingPacket.getHardwareType();
