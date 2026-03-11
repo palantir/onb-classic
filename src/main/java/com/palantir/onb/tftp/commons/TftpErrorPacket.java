@@ -81,8 +81,8 @@ public final class TftpErrorPacket extends TftpPacket {
      * @throws TftpPacketException  If the datagram isn't a valid TFTP
      *         error packet.
      */
-        @SuppressWarnings("for-rollout:OperatorPrecedence")
-        TftpErrorPacket(final DatagramPacket datagram) throws TftpPacketException {
+                @SuppressWarnings("for-rollout:OperatorPrecedence")
+                TftpErrorPacket(final DatagramPacket datagram) throws TftpPacketException {
         super(TftpPacket.ERROR, datagram.getAddress(), datagram.getPort());
         int index;
         final int length;
