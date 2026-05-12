@@ -6,7 +6,7 @@ ONB-Classic is a fork of the OpenNetBoot project that has been used at Palantir 
 Availability
 ------------
 
-Releases are currently put on `Github <PUBLIC_URL_NEEDED>`_
+Releases are currently put on `Github <https://github.com/palantir/onb-classic/releases>`_
 
 Release Schedule
 ----------------
