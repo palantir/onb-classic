@@ -41,11 +41,104 @@ apply plugin: 'com.palantir.jdks.latest'
 group = 'com.palantir.onb'
 version gitVersion()
 
+def javafxVersion = "21.0.9"
+def javafxModules = ['base', 'controls', 'fxml', 'graphics']
+
+// Per-platform configs hold the classifier-specific native jars that get folded
+// into the shadow jar. Attributes are required: openjfx publishes Gradle Module
+// Metadata with multiple variants (winRuntime/linuxRuntime/macRuntime/etc.) and
+// without these, Gradle can't pick one and resolution fails with an ambiguity
+// error. The classifier in the coordinate pins the file *after* variant
+// selection; attributes drive the variant selection itself.
+//
+// Apple Silicon only on macOS. Intel Macs (pre-2020) are unsupported; users on
+// those machines can build from source against the :mac classifier themselves.
+configurations {
+    javafxWin {
+        attributes {
+            attribute(Usage.USAGE_ATTRIBUTE, objects.named(Usage, Usage.JAVA_RUNTIME))
+            attribute(OperatingSystemFamily.OPERATING_SYSTEM_ATTRIBUTE, objects.named(OperatingSystemFamily, 'windows'))
+            attribute(MachineArchitecture.ARCHITECTURE_ATTRIBUTE, objects.named(MachineArchitecture, 'x86-64'))
+        }
+    }
+    javafxLinux {
+        attributes {
+            attribute(Usage.USAGE_ATTRIBUTE, objects.named(Usage, Usage.JAVA_RUNTIME))
+            attribute(OperatingSystemFamily.OPERATING_SYSTEM_ATTRIBUTE, objects.named(OperatingSystemFamily, 'linux'))
+            attribute(MachineArchitecture.ARCHITECTURE_ATTRIBUTE, objects.named(MachineArchitecture, 'x86-64'))
+        }
+    }
+    javafxMacAarch64 {
+        attributes {
+            attribute(Usage.USAGE_ATTRIBUTE, objects.named(Usage, Usage.JAVA_RUNTIME))
+            attribute(OperatingSystemFamily.OPERATING_SYSTEM_ATTRIBUTE, objects.named(OperatingSystemFamily, 'macos'))
+            attribute(MachineArchitecture.ARCHITECTURE_ATTRIBUTE, objects.named(MachineArchitecture, 'aarch64'))
+        }
+    }
+}
+
+def addJavafx = { String classifier, String configName ->
+    javafxModules.each { m ->
+        dependencies.add(configName, "org.openjfx:javafx-${m}:${javafxVersion}:${classifier}")
+    }
+}
+addJavafx('win',         'javafxWin')
+addJavafx('linux',       'javafxLinux')
+addJavafx('mac-aarch64', 'javafxMacAarch64')
+
 jar {
     manifest {
         attributes 'Main-Class': 'com.palantir.onb.Core'
     }
 }
+
+shadowJar {
+    archiveClassifier.set('all')
+    manifest {
+        attributes 'Main-Class': 'com.palantir.onb.Core'
+    }
+    mergeServiceFiles()
+
+    // Reproducible builds: same git SHA -> byte-identical jar
+    preserveFileTimestamps = false
+    reproducibleFileOrder = true
+
+    // Bundle natives for every supported platform. The openjfx plugin is
+    // configured with `configuration = 'compileOnly'` below so runtimeClasspath
+    // does NOT contain host-arch natives — output is independent of build host.
+    configurations = [
+        project.configurations.runtimeClasspath,
+        project.configurations.javafxWin,
+        project.configurations.javafxLinux,
+        project.configurations.javafxMacAarch64,
+    ]
+}
+
+// Fail the build if shadowJar is missing natives for any supported platform.
+// Catches future regressions (renamed config, wrong classifier, etc.) at build
+// time rather than at a user's desktop.
+tasks.register('verifyShadowJarNatives') {
+    dependsOn shadowJar
+    def jarProvider = shadowJar.archiveFile
+    doLast {
+        def jar = jarProvider.get().asFile
+        def entries = new java.util.zip.ZipFile(jar).withCloseable { zf ->
+            zf.entries().collect { it.name }
+        }
+        def checks = [
+            win        : entries.any { it.endsWith('glass.dll') },
+            linux      : entries.any { it.endsWith('libglass.so') },
+            macAarch64 : entries.any { it.endsWith('libglass.dylib') },
+        ]
+        def missing = checks.findAll { !it.value }.collect { it.key }
+        if (missing) {
+            throw new GradleException("shadowJar is missing JavaFX natives for: ${missing}. " +
+                "Check the per-platform configurations and openjfx plugin setup.")
+        }
+        logger.lifecycle("shadowJar natives present for: ${checks.keySet().join(', ')}")
+    }
+}
+tasks.named('build') { dependsOn 'verifyShadowJarNatives' }
 
 java {
     modularity.inferModulePath = true
@@ -53,18 +146,19 @@ java {
 
 // Generate version.properties file from git tags
 tasks.register('generateVersionProperties') {
-    def outputDir = file("${buildDir}/generated/resources")
+    def outputDir = layout.buildDirectory.dir('generated/resources')
     outputs.dir outputDir
+    def versionString = project.version.toString()
     doLast {
-        outputDir.mkdirs()
-        def propsFile = file("${outputDir}/version.properties")
-        propsFile.text = "version=${project.version}\n"
+        def dir = outputDir.get().asFile
+        dir.mkdirs()
+        new File(dir, 'version.properties').text = "version=${versionString}\n"
     }
 }
 
 processResources {
     dependsOn generateVersionProperties
-    from("${buildDir}/generated/resources") {
+    from(layout.buildDirectory.dir('generated/resources')) {
         include 'version.properties'
     }
 }
@@ -114,12 +208,13 @@ dependencyUpdates {
     }
 }
 
+// `configuration = 'compileOnly'` keeps JavaFX natives off runtimeClasspath
+// so the shadow jar's contents are a pure function of the explicit per-platform
+// configs above — not of whatever host architecture happened to run gradle.
 javafx {
-    version = "21.0.9"
-    modules = [
-        'javafx.controls',
-        'javafx.fxml'
-    ]
+    version = javafxVersion
+    modules = ['javafx.controls', 'javafx.fxml']
+    configuration = 'compileOnly'
 }
 
 tasks.withType(Test) {
@@ -172,19 +267,20 @@ def tomcatVersion = '10.1.49'
 dependencies {
     implementation group: 'com.palantir.isofilereader', name: 'isofilereader', version: '0.6.2'
 
-    // For dependencies
     implementation 'com.google.code.gson:gson:2.13.2'
 
-    implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: "$tomcatVersion"
+    implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core',   version: "$tomcatVersion"
     implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-jasper', version: "$tomcatVersion"
-    implementation group: 'org.apache.tomcat', name: 'tomcat-jasper', version: "$tomcatVersion"
-    implementation group: 'org.apache.tomcat', name: 'tomcat-jasper-el', version: "$tomcatVersion"
-    implementation group: 'org.apache.tomcat', name: 'tomcat-jsp-api', version: "$tomcatVersion"
+    implementation group: 'org.apache.tomcat',       name: 'tomcat-jasper',       version: "$tomcatVersion"
+    implementation group: 'org.apache.tomcat',       name: 'tomcat-jasper-el',    version: "$tomcatVersion"
+    implementation group: 'org.apache.tomcat',       name: 'tomcat-jsp-api',      version: "$tomcatVersion"
 
     testImplementation('io.github.glytching:junit-extensions:2.6.0')
     testImplementation('org.hamcrest:hamcrest-integration:1.3')
     testImplementation(platform('org.junit:junit-bom:6.0.1'))
     testImplementation('org.junit.jupiter:junit-jupiter')
+
+    // JavaFX per-platform natives are wired up earlier via addJavafx(...).
 }
 
 test {
