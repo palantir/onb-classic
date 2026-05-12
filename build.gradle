@@ -41,10 +41,54 @@ apply plugin: 'com.palantir.jdks.latest'
 group = 'com.palantir.onb'
 version gitVersion()
 
+// Define JavaFX version for consistent dependency management
+def javafxVersion = "21.0.9"
+
+configurations {
+    javafxWin {
+        attributes {
+            attribute(Usage.USAGE_ATTRIBUTE, objects.named(Usage, Usage.JAVA_RUNTIME))
+            attribute(OperatingSystemFamily.OPERATING_SYSTEM_ATTRIBUTE, objects.named(OperatingSystemFamily, 'windows'))
+            attribute(MachineArchitecture.ARCHITECTURE_ATTRIBUTE, objects.named(MachineArchitecture, 'x86-64'))
+        }
+    }
+    javafxLinux {
+        attributes {
+            attribute(Usage.USAGE_ATTRIBUTE, objects.named(Usage, Usage.JAVA_RUNTIME))
+            attribute(OperatingSystemFamily.OPERATING_SYSTEM_ATTRIBUTE, objects.named(OperatingSystemFamily, 'linux'))
+            attribute(MachineArchitecture.ARCHITECTURE_ATTRIBUTE, objects.named(MachineArchitecture, 'x86-64'))
+        }
+    }
+    // Mac ARM64 only (Apple Silicon) - Intel Macs (6+ years old) not supported
+    javafxMacAarch64 {
+        attributes {
+            attribute(Usage.USAGE_ATTRIBUTE, objects.named(Usage, Usage.JAVA_RUNTIME))
+            attribute(OperatingSystemFamily.OPERATING_SYSTEM_ATTRIBUTE, objects.named(OperatingSystemFamily, 'macos'))
+            attribute(MachineArchitecture.ARCHITECTURE_ATTRIBUTE, objects.named(MachineArchitecture, 'aarch64'))
+        }
+    }
+}
+
 jar {
     manifest {
         attributes 'Main-Class': 'com.palantir.onb.Core'
     }
+}
+
+shadowJar {
+    archiveClassifier.set('all')
+    manifest {
+        attributes 'Main-Class': 'com.palantir.onb.Core'
+    }
+    mergeServiceFiles()
+
+    // Include all JavaFX platform configurations
+    configurations = [
+        project.configurations.runtimeClasspath,
+        project.configurations.javafxWin,
+        project.configurations.javafxLinux,
+        project.configurations.javafxMacAarch64
+    ]
 }
 
 java {
@@ -115,7 +159,7 @@ dependencyUpdates {
 }
 
 javafx {
-    version = "21.0.9"
+    version = javafxVersion
     modules = [
         'javafx.controls',
         'javafx.fxml'
@@ -185,6 +229,23 @@ dependencies {
     testImplementation('org.hamcrest:hamcrest-integration:1.3')
     testImplementation(platform('org.junit:junit-bom:6.0.1'))
     testImplementation('org.junit.jupiter:junit-jupiter')
+
+    // JavaFX dependencies for all platforms (for universal JAR)
+    javafxWin "org.openjfx:javafx-base:${javafxVersion}:win"
+    javafxWin "org.openjfx:javafx-controls:${javafxVersion}:win"
+    javafxWin "org.openjfx:javafx-fxml:${javafxVersion}:win"
+    javafxWin "org.openjfx:javafx-graphics:${javafxVersion}:win"
+
+    javafxLinux "org.openjfx:javafx-base:${javafxVersion}:linux"
+    javafxLinux "org.openjfx:javafx-controls:${javafxVersion}:linux"
+    javafxLinux "org.openjfx:javafx-fxml:${javafxVersion}:linux"
+    javafxLinux "org.openjfx:javafx-graphics:${javafxVersion}:linux"
+
+    // Mac ARM64 only (Apple Silicon) - Intel Macs (6+ years old) not supported
+    javafxMacAarch64 "org.openjfx:javafx-base:${javafxVersion}:mac-aarch64"
+    javafxMacAarch64 "org.openjfx:javafx-controls:${javafxVersion}:mac-aarch64"
+    javafxMacAarch64 "org.openjfx:javafx-fxml:${javafxVersion}:mac-aarch64"
+    javafxMacAarch64 "org.openjfx:javafx-graphics:${javafxVersion}:mac-aarch64"
 }
 
 test {
