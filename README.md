@@ -17,7 +17,9 @@ Docs: [Docs](https://palantir.github.io/onb-classic/), source in docs/source
 
 Releases: [Releases on Github](https://github.com/palantir/onb-classic/releases)
 
-**Platform Support**: Release JARs include JavaFX native libraries for Windows (x86-64), Linux (x86-64), and macOS (ARM64/Apple Silicon). Intel Macs and ARM Linux are not supported in releases; users on those platforms can [build from source for their architecture](https://palantir.github.io/onb-classic/development/index.html#building-for-different-platforms).
+**Platform Support**: Release JARs include JavaFX native libraries for Windows (x86-64), Linux (x86-64),
+and macOS (ARM64/Apple Silicon). Intel Macs and ARM Linux are not supported in releases;
+users on those platforms can [build from source for their architecture](https://palantir.github.io/onb-classic/development/index.html#building-for-different-platforms).
 
 ![ONB-Classic Booting](./docs/onb_booting.gif)
 
