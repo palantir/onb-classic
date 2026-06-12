@@ -383,6 +383,16 @@ public class InteractionRunner implements Runnable {
         File crapFileGetter =
                 GeneralTools.getRealFileName(fullPacket.getFileName(), localLogger, internalSettings.getRootFs());
 
+        if (crapFileGetter == null) {
+            final TftpPacket errorPacket = new TftpErrorPacket(
+                    fullPacket.getTypedPacket().getAddress(),
+                    fullPacket.getTypedPacket().getPort(),
+                    TftpErrorPacket.ACCESS_VIOLATION,
+                    "Access Denied");
+            oneResponseSend(errorPacket);
+            return null;
+        }
+
         if (!crapFileGetter.exists()) {
             // Cant use buffered sender, that removed the null terminator and creates a error
             final TftpPacket test = new TftpErrorPacket(

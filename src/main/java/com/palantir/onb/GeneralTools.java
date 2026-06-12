@@ -17,6 +17,7 @@
 package com.palantir.onb;
 
 import java.io.File;
+import java.io.IOException;
 
 /**
  * Functions that are used multiple times.
@@ -28,17 +29,12 @@ public final class GeneralTools {
      * Convert from the relative filenames that the packet has in them, to a real system path.
      *
      * @param requestPacket raw packet location request
-     * @return file requested
+     * @return file requested, or null if the path escapes the root directory
      */
     public static File getRealFileName(String requestPacket, LogStandard localLogger, File rootFs) {
         String parsingRequestPacket = requestPacket;
-        if (parsingRequestPacket.contains("..")) {
-            localLogger.simpleReport("Packet attempted escalation out of tftp folder", true);
-            parsingRequestPacket = parsingRequestPacket.replace("..", ".");
-        }
         if (File.separatorChar == '\\') {
             if (parsingRequestPacket.contains("/")) {
-                // The file request has used linux slashes on windows
                 parsingRequestPacket = parsingRequestPacket.replace('/', '\\');
             }
         } else {
@@ -48,9 +44,20 @@ public final class GeneralTools {
                 }
             }
         }
-        String filename = rootFs.getAbsolutePath().replace("\\", "\\\\");
-        filename += File.separatorChar + parsingRequestPacket;
-        return new File(filename);
+        String filename = rootFs.getAbsolutePath() + File.separatorChar + parsingRequestPacket;
+        File resolved = new File(filename);
+        try {
+            String canonicalRoot = rootFs.getCanonicalPath() + File.separator;
+            String canonicalResolved = resolved.getCanonicalPath();
+            if (!canonicalResolved.startsWith(canonicalRoot) && !canonicalResolved.equals(rootFs.getCanonicalPath())) {
+                localLogger.simpleReport("Packet attempted escalation out of tftp folder", true);
+                return null;
+            }
+        } catch (IOException e) {
+            localLogger.simpleReport("Failed to resolve canonical path", true);
+            return null;
+        }
+        return resolved;
     }
 
     /**
