@@ -49,8 +49,7 @@ public final class GeneralTools {
         try {
             String canonicalRoot = rootFs.getCanonicalPath() + File.separator;
             String canonicalResolved = resolved.getCanonicalPath();
-            if (!canonicalResolved.startsWith(canonicalRoot)
-                    && !canonicalResolved.equals(rootFs.getCanonicalPath())) {
+            if (!canonicalResolved.startsWith(canonicalRoot) && !canonicalResolved.equals(rootFs.getCanonicalPath())) {
                 localLogger.simpleReport("Packet attempted escalation out of tftp folder", true);
                 return null;
             }
