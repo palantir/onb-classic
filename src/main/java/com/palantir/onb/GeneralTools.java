@@ -31,6 +31,7 @@ public final class GeneralTools {
      * @param requestPacket raw packet location request
      * @return file requested, or null if the path escapes the root directory
      */
+    @SuppressWarnings("for-rollout:NullAway")
     public static File getRealFileName(String requestPacket, LogStandard localLogger, File rootFs) {
         String parsingRequestPacket = requestPacket;
         if (File.separatorChar == '\\') {
