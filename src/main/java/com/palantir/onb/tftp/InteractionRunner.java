@@ -67,8 +67,7 @@ public class InteractionRunner implements Runnable {
     /**
      * The runner that does communications.
      */
-    @SuppressWarnings("for-rollout:PatternMatchingInstanceof")
-    @Override
+        @Override
     public void run() {
         TftpPacket workingPacket;
         try {
