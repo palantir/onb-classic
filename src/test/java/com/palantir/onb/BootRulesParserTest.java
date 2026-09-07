@@ -109,8 +109,7 @@ class BootRulesParserTest {
         assertNotNull(bootRulesParser.loadRules(loadedRulesData));
 
         //noinspection SpellCheckingInspection
-        @SuppressWarnings("for-rollout:UnnecessaryStringBuilder")
-        StringBuilder newerTest = new StringBuilder()
+                StringBuilder newerTest = new StringBuilder()
                 .append("{\n")
                 .append("\t\"compVersion\": \"3.0.2\",\n")
                 .append("\t\"enablepxe\": true,\n")
@@ -141,8 +140,7 @@ class BootRulesParserTest {
                 .append("}\n");
         assertNull(bootRulesParser.loadRules(newerTest.toString()));
 
-        @SuppressWarnings("for-rollout:UnnecessaryStringBuilder")
-        StringBuilder olderTest = new StringBuilder()
+                StringBuilder olderTest = new StringBuilder()
                 .append("{\n")
                 .append("\t\"compVersion\": \"1.0.0\",\n")
                 .append("\t\"enablepxe\": true,\n")
