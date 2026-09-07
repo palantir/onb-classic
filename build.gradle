@@ -14,6 +14,7 @@ buildscript {
         classpath 'com.palantir.javaformat:gradle-palantir-java-format:2.90.0'
         classpath 'com.palantir.suppressible-error-prone:gradle-suppressible-error-prone:2.33.0'
         classpath 'com.diffplug.spotless:spotless-plugin-gradle:8.1.0'
+        classpath 'com.palantir.baseline-error-prone:gradle-baseline-error-prone:0.26.0'
     }
 }
 
@@ -32,6 +33,7 @@ apply plugin: 'com.palantir.baseline' //this enables all plugins including check
 apply plugin: 'com.palantir.baseline-checkstyle'
 apply plugin: 'com.palantir.baseline-config'
 apply plugin: 'com.palantir.baseline-error-prone'
+apply plugin: 'com.palantir.baseline-error-prone-root'
 apply plugin: 'com.palantir.baseline-idea'
 apply plugin: 'com.palantir.failure-reports'
 apply plugin: 'com.palantir.baseline-java-versions'
