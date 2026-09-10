@@ -1194,8 +1194,7 @@ public class GuiController {
      *
      * Note: When Intellij says delete extra functions, that breaks everything
      */
-    @SuppressWarnings("unused")
-    public static final class InterfaceDevice {
+        public static final class InterfaceDevice {
         private final SimpleBooleanProperty enabled;
         private final SimpleStringProperty deviceName;
         private final SimpleStringProperty ipAddress;
@@ -1347,8 +1346,7 @@ public class GuiController {
      *
      * Note: When Intellij says delete extra functions, that breaks everything
      */
-    @SuppressWarnings("unused")
-    public static final class GeneralSystemRow {
+        public static final class GeneralSystemRow {
         private final SimpleStringProperty mac;
         private final SimpleStringProperty lastIp;
         private final SimpleStringProperty service;

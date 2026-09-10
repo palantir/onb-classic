@@ -273,8 +273,7 @@ public class Home extends HttpServlet {
             // Installs of rhel and cent will not work if they request a range and the server does not respond with that
             // It will look like files are downloading fine, but that will be a lie
             if (range != null) {
-                @SuppressWarnings("for-rollout:StringSplitter")
-                String[] parts = range.split("=")[1].split("-");
+                                String[] parts = range.split("=")[1].split("-");
                 resp.setContentLengthLong((Integer.parseInt(parts[1]) - Integer.parseInt(parts[0]) + 1));
                 pipePart(input, out, resp.getBufferSize(), Integer.parseInt(parts[0]), Integer.parseInt(parts[1]));
             } else {
@@ -296,8 +295,7 @@ public class Home extends HttpServlet {
                 ZipEntry entry = entries.nextElement();
                 if (entry.getName().equals(compressionPath)) {
                     resp.setContentLengthLong(entry.getSize());
-                    @SuppressWarnings("for-rollout:StringSplitter")
-                    String[] processRealName =
+                                        String[] processRealName =
                             entry.getName().toLowerCase(Locale.ROOT).split("/");
                     // This could need range data sometime
                     resp.addHeader(
@@ -318,7 +316,7 @@ public class Home extends HttpServlet {
         }
     }
 
-    @SuppressWarnings({"CyclomaticComplexity", "for-rollout:NarrowingCompoundAssignment"})
+    @SuppressWarnings("CyclomaticComplexity")
     private void sendIsoData(
             File getIsoImage, String passedCompressionPath, HttpServletRequest req, HttpServletResponse resp) {
         String compressionPath = passedCompressionPath;
@@ -351,8 +349,7 @@ public class Home extends HttpServlet {
             String range = req.getHeader("range");
             if (range != null) {
                 // Feed part of the file
-                @SuppressWarnings("for-rollout:StringSplitter")
-                String[] parts = range.split("=")[1].split("-");
+                                String[] parts = range.split("=")[1].split("-");
                 long start = Integer.parseInt(parts[0]);
                 long end = Integer.parseInt(parts[1]);
                 if (generalFile.get().getSize() < end) {

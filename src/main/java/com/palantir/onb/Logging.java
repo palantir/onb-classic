@@ -128,8 +128,7 @@ public class Logging implements LogStandard {
      * @param reportingError is this an error
      */
     @Override
-    @SuppressWarnings("JavaTimeDefaultTimeZone")
-    public void simpleReport(String allLevels, boolean reportingError) {
+        public void simpleReport(String allLevels, boolean reportingError) {
         String prefix = "";
         if (setDates) {
             final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss - ", Locale.ROOT);
@@ -170,8 +169,7 @@ public class Logging implements LogStandard {
      * @param reportingError Is the report an error?
      */
     @Override
-    @SuppressWarnings("JavaTimeDefaultTimeZone")
-    public void report(
+        public void report(
             String level0, String level1, String level2, String level3, String level4, boolean reportingError) {
         String prefix = "";
         if (setDates) {
@@ -280,8 +278,7 @@ public class Logging implements LogStandard {
      * @param passedText text to write
      * @return did it write correctly
      */
-    @SuppressWarnings("JavaTimeDefaultTimeZone")
-    private boolean writeLog(String passedText) {
+        private boolean writeLog(String passedText) {
         try (PrintWriter out = new PrintWriter(Files.newBufferedWriter(
                 Paths.get(fileLogSaveLoc),
                 StandardCharsets.UTF_8,
