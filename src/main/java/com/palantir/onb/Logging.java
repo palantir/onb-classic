@@ -301,8 +301,8 @@ public class Logging implements LogStandard {
      * If the logger is using a buffer, dump the buffer.
      * @return buffer of logs
      */
-    @SuppressWarnings("for-rollout:NullAway")
-    @Override
+        @SuppressWarnings("for-rollout:NullAway")
+        @Override
     public List<TimeStampedLog> getLogNDump() {
         return null;
     }
