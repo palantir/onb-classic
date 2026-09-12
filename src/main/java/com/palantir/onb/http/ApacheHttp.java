@@ -35,8 +35,8 @@ import org.apache.catalina.startup.Tomcat;
  * Runnable to start the web server.
  */
 public class ApacheHttp implements Runnable {
-    @SuppressWarnings("for-rollout:NullAway")
-    private static LogStandard localLogger;
+        @SuppressWarnings("for-rollout:NullAway")
+        private static LogStandard localLogger;
 
     private int logger;
     private int startPort;
