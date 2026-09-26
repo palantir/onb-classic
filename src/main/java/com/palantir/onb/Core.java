@@ -30,8 +30,8 @@ import java.util.Properties;
  * Main entry point for application.
  */
 public final class Core {
-    @SuppressWarnings("for-rollout:NullAway")
-    private static Manager manager;
+        @SuppressWarnings("for-rollout:NullAway")
+        private static Manager manager;
 
     public static final String ONB_VERSION = loadVersion();
 

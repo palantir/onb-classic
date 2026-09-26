@@ -29,8 +29,8 @@ import java.io.IOException;
 public final class Manager {
     private BootRules overrides = new BootRules();
 
-    @SuppressWarnings("for-rollout:NullAway")
-    private static Logging logger;
+        @SuppressWarnings("for-rollout:NullAway")
+        private static Logging logger;
 
     private String rulesToLoad = "";
 
@@ -43,11 +43,11 @@ public final class Manager {
     private ApacheHttp httpProcess;
     private Thread httpThread;
 
-    @SuppressWarnings("for-rollout:NullAway")
-    private BootRules fileLoaded = null;
+        @SuppressWarnings("for-rollout:NullAway")
+        private BootRules fileLoaded = null;
 
-    @SuppressWarnings("for-rollout:NullAway")
-    Manager() {}
+        @SuppressWarnings("for-rollout:NullAway")
+        Manager() {}
 
     public static Logging getManagerLogger() {
         return logger;
@@ -413,8 +413,8 @@ public final class Manager {
         return true;
     }
 
-    @SuppressWarnings("for-rollout:NullAway")
-    public boolean saveSettingsFile() {
+        @SuppressWarnings("for-rollout:NullAway")
+        public boolean saveSettingsFile() {
         String rulesData = null;
         try {
             rulesData = fileLoaded.saveRules();
