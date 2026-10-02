@@ -26,8 +26,8 @@ public class DhcpOption {
     // How long will the following data be
     private byte length = 0x00;
     // A byte array of the data payload
-    @SuppressWarnings("for-rollout:NullAway")
-    private byte[] payload;
+        @SuppressWarnings("for-rollout:NullAway")
+        private byte[] payload;
 
     /**
      * Get option code.

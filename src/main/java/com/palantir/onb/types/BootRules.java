@@ -33,8 +33,8 @@ import java.util.List;
  * Rules for the services.
  */
 public class BootRules {
-    @SuppressWarnings("for-rollout:NullAway")
-    private String[] lastInterfaces = null;
+        @SuppressWarnings("for-rollout:NullAway")
+        private String[] lastInterfaces = null;
 
     private int broadcastSetting = -1;
     private List<BootRule> ruleSet;
