@@ -24,8 +24,8 @@ import java.io.File;
 public class TftpSettings {
     private File rootFs;
 
-    @SuppressWarnings("for-rollout:NullAway")
-    public TftpSettings() {
+        @SuppressWarnings("for-rollout:NullAway")
+        public TftpSettings() {
         rootFs = null;
     }
 

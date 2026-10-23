@@ -39,8 +39,8 @@ public class GuiLog implements LogStandard {
     /**
      * We always init the gui logger at level 4.
      */
-    @SuppressWarnings("for-rollout:NullAway")
-    GuiLog() {
+        @SuppressWarnings("for-rollout:NullAway")
+        GuiLog() {
         consoleLogLevel = 4;
     }
 
@@ -48,8 +48,8 @@ public class GuiLog implements LogStandard {
      * We can set a custom level if one day this is seen needed.
      * @param conLevel console log level
      */
-    @SuppressWarnings("for-rollout:NullAway")
-    public GuiLog(int conLevel) {
+        @SuppressWarnings("for-rollout:NullAway")
+        public GuiLog(int conLevel) {
         consoleLogLevel = conLevel;
     }
 
@@ -88,8 +88,8 @@ public class GuiLog implements LogStandard {
      * GUI should never ask for this but we need to have it.
      * @return null!
      */
-    @SuppressWarnings("for-rollout:NullAway")
-    @Override
+        @SuppressWarnings("for-rollout:NullAway")
+        @Override
     public String getLogFileLocation() {
         return null;
     }

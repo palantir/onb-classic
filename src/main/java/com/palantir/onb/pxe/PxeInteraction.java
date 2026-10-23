@@ -37,8 +37,8 @@ public final class PxeInteraction {
      * @param option which option number we want
      * @return the option, or null
      */
-    @SuppressWarnings("for-rollout:NullAway")
-    public static DhcpOption getOption(ProcessedPacket inputPacket, byte option) {
+        @SuppressWarnings("for-rollout:NullAway")
+        public static DhcpOption getOption(ProcessedPacket inputPacket, byte option) {
         for (final DhcpOption singleOption : inputPacket.getActiveOptions()) {
             if (singleOption.getOption() == option) {
                 return singleOption;
@@ -240,8 +240,8 @@ public final class PxeInteraction {
      * @param passedPacket - The incoming packet
      * @return - Nice organized packet
      */
-    @SuppressWarnings("for-rollout:NullAway")
-    public static ProcessedPacket convertPacketToPretty(DatagramPacket passedPacket) {
+        @SuppressWarnings("for-rollout:NullAway")
+        public static ProcessedPacket convertPacketToPretty(DatagramPacket passedPacket) {
         final ProcessedPacket tempPacket = new ProcessedPacket();
         final byte[] rawPacket = passedPacket.getData();
         if (rawPacket.length < 236) {
