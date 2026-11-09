@@ -46,8 +46,8 @@ public class PxeService implements Runnable {
     private String[] interfaceName = new String[0];
     private BootRules loadingRules = new BootRules();
 
-    @SuppressWarnings("for-rollout:NullAway")
-    private LogStandard logger;
+        @SuppressWarnings("for-rollout:NullAway")
+        private LogStandard logger;
 
     /**
      * Pass in a logger.

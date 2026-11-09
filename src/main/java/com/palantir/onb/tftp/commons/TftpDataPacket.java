@@ -194,6 +194,7 @@ public final class TftpDataPacket extends TftpPacket {
      * @param localData The buffer to store the packet and to use in the datagram.
      * @return The datagram argument
      */
+    @SuppressWarnings("for-rollout:ReferenceEquality")
     @Override
     DatagramPacket newDatagram(final DatagramPacket datagram, final byte[] localData) {
         localData[0] = 0;
